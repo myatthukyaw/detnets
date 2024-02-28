@@ -1,0 +1,8 @@
+*.pt
+*.pth
+
+datasets/
+runs
+logs/
+weights/
+wandb

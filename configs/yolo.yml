@@ -1,0 +1,23 @@
+path: D:/Workspace/personal/detnets/datasets # dataset root dir
+train: SSLAD-2D-YOLO/images/train  # train images (relative to 'path') 118287 images
+val: SSLAD-2D-YOLO/images/val  # val images (relative to 'path') 5000 images
+test: test-dev2017.txt 
+names : 
+  0 : Pedestrian
+  1 : Cyclist
+  2 : Car
+  3 : Truck
+  4 : Tram
+  5 : Tricycle
+
+weight : yolov8n.pt
+device : 'cpu'
+num_workers : 8
+epochs : 3
+batch_size : 10
+
+# saving results to wandb and local dir
+wandb : True            # save results to weights and bias
+project : adult-kid     # results will be saved to runs/project/run_name
+run_name : yolov8n-test
+
