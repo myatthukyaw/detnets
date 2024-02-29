@@ -1,4 +1,4 @@
-project_name: adult-kid-v3.2-augmented-5-2-coco-format
+project_name: SSLAD-2D
 train_set: train
 val_set: val
 num_gpus: 1
@@ -11,4 +11,4 @@ std: [ 0.229, 0.224, 0.225 ]
 anchors_scales: '[2 ** 0, 2 ** (1.0 / 3.0), 2 ** (2.0 / 3.0)]'
 anchors_ratios: '[(0.7, 1.4), (1.0, 1.0), (1.5, 0.7)]'
 
-obj_list: [ 'adult', 'kid' ]
+obj_list: [ 'Pedestrian', 'Cyclist', 'Car', 'Truck', 'Tram', 'Tricycle' ]

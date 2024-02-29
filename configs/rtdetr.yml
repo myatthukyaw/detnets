@@ -18,7 +18,7 @@ epochs : 3
 batch_size : 10
 
 # saving results to wandb and local dir
-wandb : True            # save results to weights and bias
+wandb : False            # save results to weights and bias
 project : SSLAD-2D     # results will be saved to runs/project/run_name
 run_name : yolov8n-test
 

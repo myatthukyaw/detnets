@@ -1,4 +1,4 @@
-project       : adult-kid                   # project file that contains parameters
+project       : SSLAD-2D                   # project file that contains parameters
 compound_coef : 0                           # coefficients of efficientdet or model size
 num_workers   : 2                           # num_workers of dataloader
 batch_size    : 10                          # number of images per batch among all devices

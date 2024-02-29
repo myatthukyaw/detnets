@@ -19,4 +19,4 @@ This repository builds upon the hard work and innovative contributions of numero
 - **Authors :** Nicolas Carion, Francisco Massa, Gabriel Synnaeve, Nicolas Usunier, Alexander Kirillov, and Sergey Zagoruyko
 - **Repository :** https://github.com/facebookresearch/detr
 
-### I encourage users to refer to the original works and repositories for detailed insights and to cite them appropriately in their work.
+#### We encourage users to refer to the original works and repositories for detailed insights and to cite them appropriately in their work.

@@ -73,8 +73,8 @@ def yolo_to_coco(image_dir, label_dir, output_dir, split_set=None):
 
 def get_args():
     parser = argparse.ArgumentParser(description='')
-    parser.add_argument('--dataset_root', type=str, default='datasets/adult-kid-v3.1-base/')
-    parser.add_argument('--output_dataset', type=str, default='datasets/adult-kid-v3.1-base-coco-format/')
+    parser.add_argument('--dataset_root', type=str, default='datasets/my_dataset_yolo/')
+    parser.add_argument('--output_dataset', type=str, default='datasets/my_dataset_coco/')
     return parser.parse_args()
 
 if __name__ == "__main__": 
