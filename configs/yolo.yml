@@ -1,3 +1,4 @@
+# training configuration
 path: D:/Workspace/personal/detnets/datasets # dataset root dir
 train: SSLAD-2D-YOLO/images/train  # train images (relative to 'path') 118287 images
 val: SSLAD-2D-YOLO/images/val  # val images (relative to 'path') 5000 images
@@ -9,23 +10,20 @@ names :
   3 : Truck
   4 : Tram
   5 : Tricycle
-
-# training configuration
-weight : yolov8n.pt
+weight : yolov8n.pt     # pretrained model choices - yolov8n.pt yolov8s.pt yolov8m.pt yolov8l.pt yolov8x.pt
 device : 'cpu'
 num_workers : 8
 epochs : 3
 batch_size : 10
-
 # saving results to wandb and local dir
-wandb : True            # save results to weights and bias
+wandb : False            # save results to weights and bias
 project : SSLAD-2D     # results will be saved to runs/project/run_name
 run_name : yolov8n-test
 
 # inference configuration
 inf_weight : yolov8n.pt # your trained weight or sth
-source : demo.png       # image or video to run inference
+source : datasets/demo.jpg       # image or video to run inference
 conf_thres : 0.5
 nms_thres : 0.5
 show : False
-save : False
+save : True

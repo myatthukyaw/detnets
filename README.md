@@ -79,24 +79,51 @@ chmod +x scripts/download_weights.sh
 ./scripts/download_weights.sh
 ```
 
-Step 4: One script to run them all.</br>
+Step 4 : Configure WandB credentials 
+
+If you are not going to log the training metrics to wandb, set the wandb flag to False in the config file. 
+
+Otherwise configure wandb. 
+
+```bash
+wanb login 
+# enter your API key
+```
+
+Step 5: One script to run them all.</br>
 You can run all tasks for all models using our [main](https://github.com/myatthukyaw/detnets/blob/main/main.py) script.
 There are two arguments to specify. 
 - model (yolo, efficient-det, detr)
 - task (train, val, efficient)
 
-Step 5: Training
+Step 6: Training and Evaluation
 ```python
+# training
 python train.py --model yolo --task train
-```
 
-Step 6: Evaluation
-```python
+# evaluation
 python train.py --model yolo --task val
 ```
 
-Step 7: Inference
+Step 7 : Inferece
+
+Inference parameters can be configure in each model yaml configuration file.
+
+Here is an example:
+```bash
+...
+# inference configuration
+inf_weight : yolov8n.pt       # your trained weight or sth
+source : data/demo.jpg        # image or video to run inference
+conf_thres : 0.5
+nms_thres : 0.5
+show : False
+save : True
+...
+```
+
 ```python
+# inference
 python train.py --model yolo --task inference
 ```
 

@@ -8,7 +8,7 @@ from types import SimpleNamespace
 from utils.files import get_save_dir
 
 sys.path.append(os.path.abspath('models/ultralytics'))
-from models.ultralytics import train as yolo_train, val as yolo_eval
+from models.ultralytics import train as yolo_train, val as yolo_eval, inference as yolo_inference
 
 sys.path.append(os.path.abspath('models/efficientdet'))
 from models.efficientdet import train as efficientdet_train #, val as yolo_eval
@@ -19,8 +19,8 @@ def get_arguments():
                         help='Choose the model to use from the list: yolov8, efficient-det, detr, rt-detr.')
     parser.add_argument('--mode', choices=['train', 'val', 'inference'], required=True,
                         help='Specify the mode to run the model: train, val, or inference.')
-    parser.add_argument('--source', default='data',
-                        help='Input source for inference mode, such as image or video path. only require if mode is inference')
+    #parser.add_argument('--source', default='data',
+    #                    help='Input source for inference mode, such as image or video path. only require if mode is inference')
     return parser.parse_args()
 
 # Function to load configuration from a YAML file
@@ -33,7 +33,7 @@ def load_config(model_name, mode_name):
 
 # Mapping of models to their train and eval functions
 model_functions = {
-    'yolo': {'train': yolo_train.train,  'val': yolo_eval.val },
+    'yolo': {'train': yolo_train.train,  'val': yolo_eval.val, 'inference': yolo_inference.inference },
     'efficient-det' : {'train': efficientdet_train.train},
 #    'detr': {'train': detr_train.main, 'eval': detr_eval.main},
 }
@@ -48,6 +48,7 @@ def run_task(args ,config ):
     #config['project'] = f"runs/{config['project']}"
     if args.mode == "inference":
         save_dir = get_save_dir(config['project'], "outputs")
+        config['run_name'] = "outputs"
     else:
         save_dir = get_save_dir(config['project'], config['run_name'])
     print(f"Results will be saved to {save_dir}")

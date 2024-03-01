@@ -24,6 +24,8 @@ def inference(**cfg):
                                     show=cfg['show'], 
                                     device=0,
                                     imgsz=[640, 640],
+                                    project = cfg['project'],
+                                    name = cfg['run_name'],
                                     verbose =True)
         # for result in predictions:
         #     if args.save_txt:

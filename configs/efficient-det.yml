@@ -1,3 +1,4 @@
+# training configuration
 project       : SSLAD-2D                   # project file that contains parameters
 compound_coef : 0                           # coefficients of efficientdet or model size
 num_workers   : 2                           # num_workers of dataloader
@@ -15,7 +16,6 @@ log_path      : logs
 load_weights  : weights/efficientdet-d0.pth      # whether to load weights from a checkpoint, set None to initialize, set \'last\' to load last checkpoint')
 saved_path    : runs                        # root path to save the training results
 debug         : False                       # whether visualize the predicted boxes of training,'the output images will be in test/')
-
 # weights and bias
 wandb           : True                  # save results to wandb, set False if you don't want to log to wandb  
 wandb_project   : test                  # wandb project name
