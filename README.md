@@ -31,7 +31,7 @@ pip install -r requirements.txt
 
 ## How to Use
 
-Step 1: Preparing Your Data</br>
+#### Step 1: Preparing Your Data</br>
 There are two dataset formats for training the detection models : yolo and coco. Prepare your dataset in one of those format according to your model accepted format. You can convert your dataset format between yolo and coco using our provided scripts. 
 
 ```python
@@ -41,13 +41,13 @@ python scripts/yolo2coco.py --dataset_root datasets/my_dataset_yolo --output_dat
 python scripts/coco2yolo.py --coco_dataset_root datasets/my_dataset_coco --output_yolo_dataset datasets/my_dataset_yolo
 ```
 
-Step 2: Selecting a Model</br>
+#### Step 2: Selecting a Model</br>
 Choose a model that fits your requirements and update the training configuration file under [configs](https://github.com/myatthukyaw/detnets/blob/main/configs) folder.
 
 <table>
   <tr>
     <th>Model</th>
-    <th>Base</th>
+    <th>Dataset format</th>
     <th>Configuration File</th>
   </tr>
   <tr>
@@ -72,14 +72,14 @@ Choose a model that fits your requirements and update the training configuration
   </tr>
 </table>
 
-Step 3: Download the pretrained weights
+#### Step 3: Download the pretrained weights
 
 ```bash
 chmod +x scripts/download_weights.sh
 ./scripts/download_weights.sh
 ```
 
-Step 4 : Configure WandB credentials 
+#### Step 4 : Configure WandB credentials 
 
 If you are not going to log the training metrics to wandb, set the wandb flag to False in the config file. 
 
@@ -90,13 +90,13 @@ wanb login
 # enter your API key
 ```
 
-Step 5: One script to run them all.</br>
+#### Step 5: One script to run them all.</br>
 You can run all tasks for all models using our [main](https://github.com/myatthukyaw/detnets/blob/main/main.py) script.
 There are two arguments to specify. 
 - model (yolo, efficient-det, detr)
 - task (train, val, efficient)
 
-Step 6: Training and Evaluation
+#### Step 6: Training and Evaluation
 ```python
 # training
 python train.py --model yolo --task train
@@ -105,7 +105,7 @@ python train.py --model yolo --task train
 python train.py --model yolo --task val
 ```
 
-Step 7 : Inferece
+#### Step 7 : Inferece
 
 Inference parameters can be configure in each model yaml configuration file.
 
