@@ -2,7 +2,7 @@ import os
 import time
 import yaml
 import datetime
-import argparse
+import shutil
 import wandb
 from pathlib import Path
 from types import SimpleNamespace
@@ -22,6 +22,7 @@ def train(**cfg):
                 "num_classes"  : len(cfg['names']), 
                 "output_dir"   : cfg['save_dir'], 
             }
+    shutil.copy(cfg['config_file'], cfg['save_dir'])
 
     if cfg['wandb']:
         wandb.init( project=cfg['project'],
@@ -56,9 +57,9 @@ def train(**cfg):
     print('Total training time : {}'.format(total_time_str))
     config["training_time"] = total_time_str
 
-    with open(os.path.join(cfg['save_dir'],'training_config.yaml'), 'w') as file:
-        yaml.dump(config, file)
-    print("Outputs and results saved to ", cfg['save_dir'])
+    # with open(os.path.join(cfg['save_dir'],'training_config.yaml'), 'w') as file:
+    #     yaml.dump(config, file)
+    # print("Outputs and results saved to ", cfg['save_dir'])
     
     if cfg['wandb']:
         wandb.finish() 
