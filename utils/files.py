@@ -2,11 +2,11 @@ import os
 from pathlib import Path
 
 
-def get_save_dir( project, name ):
+def get_save_dir( project, model, name, sep ):
     """Return save_dir"""
-    project_path = os.path.join('runs', project)
+    project_path = os.path.join('runs', project, model)
     # name = os.path.join(project, name)
-    save_dir = increment_path(Path(project_path) / name, sep="-exp")
+    save_dir = increment_path(Path(project_path) / name, sep=sep)
 
     return Path(save_dir)
 

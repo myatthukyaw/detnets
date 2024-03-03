@@ -20,6 +20,18 @@ Available SOTA Detection Models
 
 ## Installation
 
+Create a conda environment
+```bash
+conda create --name detnets python=3.8
+```
+
+Install Pytorch. 
+Pytorch 1.10.0 works for all models on most GPU types but in A100 GPU, yolo models might have some issues relating CUDA. Try installing Pytorch 2 for yolo models in separate environment if CUDA issues occurs.
+```bash
+conda install pytorch==1.10.0 torchvision==0.11.0 torchaudio==0.10.0 cudatoolkit=11.3 -c pytorch -c conda-forge
+```
+
+Clone the repo and install dependencies
 ```bash
 # Clone this repository
 git clone https://github.com/myatthukyaw/detnets.git
@@ -126,6 +138,24 @@ save : True
 # inference
 python train.py --model yolo --task inference
 ```
+
+#### Step 8 : Saving the output artifacts for each task.
+
+Everytime you run the train, val and inference tasks, the results artifacts like training config, trained model, result metrics, and images, will be saved in a directory.
+The directory format is as below: 
+```bash
+# for training and validation
+runs/{project}/{model}/{run-name}-exp{x}
+
+# for inference
+runs/{project}/{model}/outputs-{x}
+```
+
+- **project** - dataset name is recommaned to use for this. If wandb is true, this name will be the same as the project name on wandb. 
+- **model** - model you used to train/val/run inference.
+- **run_name** - run name you want to give for training task. If wandb is true, this name will be the same as the wandb run. 
+- **x** - iterative variable for repetative runs or outputs
+
 
 ## Model Comparison
 We will provide the detailed benchmark results for all models soon.

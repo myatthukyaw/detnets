@@ -33,7 +33,9 @@ def load_config(model_name, mode_name):
 
 # Mapping of models to their train and eval functions
 model_functions = {
-    'yolo': {'train': yolo_train.train,  'val': yolo_eval.val, 'inference': yolo_inference.inference },
+    'yolo'          : {'train': yolo_train.train,  
+                        'val': yolo_eval.val, 
+                        'inference': yolo_inference.inference },
     'efficient-det' : {'train': efficientdet_train.train},
 #    'detr': {'train': detr_train.main, 'eval': detr_eval.main},
 }
@@ -47,10 +49,12 @@ def run_task(args ,config ):
 
     #config['project'] = f"runs/{config['project']}"
     if args.mode == "inference":
-        save_dir = get_save_dir(config['project'], "outputs")
+        # inference results will be save in format - project-x/model/outputs-x
+        save_dir = get_save_dir(config['project'], args.model, "outputs", sep="-")
         config['run_name'] = "outputs"
     else:
-        save_dir = get_save_dir(config['project'], config['run_name'])
+        # training results will be save in format - project-x/model/run-expx
+        save_dir = get_save_dir(config['project'], args.model, config['run_name'], sep="-exp")
     print(f"Results will be saved to {save_dir}")
 
     task_config = { **config, **vars(args), 
