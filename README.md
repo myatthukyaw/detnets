@@ -107,14 +107,15 @@ You can run all tasks for all models using our [main](https://github.com/myatthu
 There are two arguments to specify. 
 - model (yolo, efficient-det, detr)
 - task (train, val, efficient)
+Lets go to next step for more information. 
 
 #### Step 6: Training and Evaluation
 ```python
 # training
-python train.py --model yolo --task train
+python main.py --model yolo --task train
 
 # evaluation
-python train.py --model yolo --task val
+python main.py --model yolo --task val
 ```
 
 #### Step 7 : Inferece
