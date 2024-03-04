@@ -1,3 +1,4 @@
+import os
 import ast
 import time
 
@@ -9,7 +10,10 @@ from matplotlib import colors
 
 from backbone import EfficientDetBackbone
 from efficientdet.utils import BBoxTransform, ClipBoxes
-from utils.utils import preprocess, invert_affine, postprocess, STANDARD_COLORS, standard_to_bgr, get_index_label, plot_one_box
+from utils.utils import preprocess,  preprocess_video, invert_affine, postprocess, STANDARD_COLORS, standard_to_bgr, get_index_label, plot_one_box
+
+IMG_FORMATS = "bmp", "dng", "jpeg", "jpg", "mpo", "png", "tif", "tiff", "webp", "pfm"  # image suffixes
+VID_FORMATS = "asf", "avi", "gif", "m4v", "mkv", "mov", "mp4", "mpeg", "mpg", "ts", "wmv", "webm"  # video suffixes
 
 class Inference:
     def __init__(self, **cfg):
@@ -31,12 +35,16 @@ class Inference:
         self.obj_list = self.cfg['obj_list']
         self.color_list = standard_to_bgr(STANDARD_COLORS)
         self._load_model()
+        self._create_save_dir()
         self.input_sizes = self._get_input_sizes()
         self.input_size = self.input_sizes[self.compound_coef] # if force_input_size is None else force_input_size
 
     def _get_input_sizes(self):
         return [512, 640, 768, 896, 1024, 1280, 1280, 1536, 1536]
     
+    def _create_save_dir(self):
+        os.makedirs(self.cfg['save_dir'])
+
     def _load_model(self):
         self.model = EfficientDetBackbone( compound_coef=self.compound_coef, 
                                            num_classes=len(self.obj_list),
@@ -51,32 +59,63 @@ class Inference:
             model = model.cuda()
         if self.use_float16:
             model = model.half()
+
+    def _convert_to_tensor(self, framed_imgs):
+        device = torch.device('cuda' if self.use_cuda else 'cpu')
+        tensors = [torch.from_numpy(img).to(device) for img in framed_imgs]
+        tensor = torch.stack(tensors).to(torch.float32 if not self.use_float16 else torch.float16)
+        return tensor.permute(0, 3, 1, 2)
     
-    def run_inference(self):
-
-        ori_imgs, framed_imgs, framed_metas = preprocess(self.source, max_size=self.input_size)
-        
-        if self.use_cuda:
-            x = torch.stack([torch.from_numpy(fi).cuda() for fi in framed_imgs], 0)
-        else:
-            x = torch.stack([torch.from_numpy(fi) for fi in framed_imgs], 0)
-        x = x.to(torch.float32 if not self.use_float16 else torch.float16).permute(0, 3, 1, 2)
-
+    def _run_inference(self, framed_imgs, framed_metas):
+        # if self.use_cuda:
+        #     x = torch.stack([torch.from_numpy(fi).cuda() for fi in framed_imgs], 0)
+        # else:
+        #     x = torch.stack([torch.from_numpy(fi) for fi in framed_imgs], 0)
+        # x = x.to(torch.float32 if not self.use_float16 else torch.float16).permute(0, 3, 1, 2)
+        start = time.time()
+        x = self._convert_to_tensor(framed_imgs)
         with torch.no_grad():
             features, regression, classification, anchors = self.model(x)
             out = postprocess( x, anchors, regression, classification, self.regressBoxes, 
                                self.clipBoxes, self.threshold, self.iou_threshold)
-
         out = invert_affine(framed_metas, out)
-        self.display(out, ori_imgs, imshow=self.cfg['show'], imwrite=self.cfg['save'])
+        end = time.time() - start
+        print(f"Inference time on frame : {end}")
+        return out
 
 
-    def display(self, preds, imgs,  imshow=True, imwrite=False):
+    def image_inference(self):
+        ori_imgs, framed_imgs, framed_metas = preprocess(self.source, max_size=self.input_size)
+        out = self._run_inference(framed_imgs, framed_metas)
+        self.display(out, ori_imgs)
+    
+    def video_inference(self):
+        cap = cv2.VideoCapture(self.cfg['source'])
+        frame_no = 0
+
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                break
+
+            # frame preprocessing
+            ori_imgs, framed_imgs, framed_metas = preprocess_video(frame, max_size=self.input_size)
+            out = self._run_inference(framed_imgs, framed_metas)
+            img_show = self.display(out, ori_imgs, frame_no)
+
+            frame_no += 1 
+            if cv2.waitKey(1) & 0xFF == ord('q'): 
+                break
+
+        cap.release()
+        cv2.destroyAllWindows()
+
+
+    def display(self, preds, imgs, frame_no=0):
         for i in range(len(imgs)):
             if len(preds[i]['rois']) == 0:
                 continue
-
-            imgs[i] = imgs[i].copy()
+            #imgs[i] = imgs[i].copy()
 
             for j in range(len(preds[i]['rois'])):
                 x1, y1, x2, y2 = preds[i]['rois'][j].astype(np.int64)
@@ -85,16 +124,23 @@ class Inference:
                 plot_one_box( imgs[i], [x1, y1, x2, y2], label=obj, score=score,
                               color=self.color_list[get_index_label(obj, self.obj_list)])
 
-            if imshow:
+            if self.cfg['show']:
                 cv2.imshow('img', imgs[i])
                 cv2.waitKey(0)
 
-            if imwrite:
-                cv2.imwrite(f'test/img_inferred_d{self.compound_coef}_this_repo_{i}.jpg', imgs[i])
+            if self.cfg['save']:
+                output_path = os.path.join(self.cfg['save_dir'], self.cfg['source'].split('/')[-1].split('.')[0]+f'-{frame_no}.jpg')
+                cv2.imwrite(output_path, imgs[i])
 
 
 
 def inference(**cfg):
     
     infer = Inference(**cfg)
-    infer.run_inference()
+    if cfg['source'].split(".")[-1].lower() in IMG_FORMATS:
+        infer.image_inference()
+    elif cfg['source'].split(".")[-1].lower() in VID_FORMATS:
+        infer.video_inference()
+    else:
+        print("Unsupported format or dictionary.")
+    print(f"Inference outputs saved to {cfg['save_dir']}")
