@@ -19,7 +19,7 @@ def inference(**cfg):
                                     stream=False,  
                                     save=cfg['save'], 
                                     conf = cfg['conf_thres'],
-                                    iou = cfg['nms_thres'],
+                                    iou = cfg['iou_thres'],
                                     max_det=100, 
                                     show=cfg['show'], 
                                     device=0,
