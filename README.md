@@ -12,7 +12,7 @@ Available SOTA Detection Models
 - [x] [Yolov8](https://github.com/myatthukyaw/detnets/tree/main/models/ultralytics) - [Original Repository](https://github.com/ultralytics/ultralytics)
 - [x] [Yolov5](https://github.com/myatthukyaw/detnets/tree/main/models/ultralytics) - [Original Repository](https://github.com/ultralytics/ultralytics)
 - [x] [RTDETR](https://github.com/myatthukyaw/detnets/tree/main/models/ultralytics) - [Original Repository](https://github.com/ultralytics/ultralytics)
-- [ ] [EfficientDet](https://github.com/myatthukyaw/detnets/tree/main/models/efficient-det) - [Original Repository](https://github.com/zylo117/Yet-Another-EfficientDet-Pytorch)
+- [x] [EfficientDet](https://github.com/myatthukyaw/detnets/tree/main/models/efficient-det) - [Original Repository](https://github.com/zylo117/Yet-Another-EfficientDet-Pytorch)
 - [ ] [DETR](https://github.com/myatthukyaw/detnets/blob/main/models/detr) - [Original Repository](https://github.com/facebookresearch/detr)
 <!-- - [ ] [Detectron2](https://github.com/myatthukyaw/detnets/tree/main/models/detectron2) - [Original Repository](https://github.com/facebookresearch/detectron2) -->
 

@@ -37,7 +37,7 @@ run_name      : efficient-det-0-test    # results will be saved to runs/project/
 
 # inference configuration
 inf_weight    : runs/SSLAD-2D/efficient-det/efficient-det-0-test-exp3/efficientdet-d0_0_176.pth              # path to your trained weight or pretrained weight
-source        : datasets/demo.jpg       # image or video to run inference
+source        : datasets/demo.mp4       # image or video to run inference
 conf_thres    : 0.5
 iou_thres     : 0.5
 show          : False
