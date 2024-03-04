@@ -11,7 +11,7 @@ sys.path.append(os.path.abspath('models/ultralytics'))
 from models.ultralytics import train as yolo_train, val as yolo_eval, inference as yolo_inference
 
 sys.path.append(os.path.abspath('models/efficientdet'))
-from models.efficientdet import train as efficientdet_train #, val as yolo_eval
+from models.efficientdet import train as efficientdet_train, inference as efficientdet_inference
 
 def get_arguments():
     parser = argparse.ArgumentParser(description='Script to run different models with specified modes.')
@@ -36,8 +36,8 @@ model_functions = {
     'yolo'          : {'train': yolo_train.train,  
                         'val': yolo_eval.val, 
                         'inference': yolo_inference.inference },
-    'efficient-det' : {'train': efficientdet_train.train},
-#    'detr': {'train': detr_train.main, 'eval': detr_eval.main},
+    'efficient-det' : {'train': efficientdet_train.train,
+                       'inference': efficientdet_inference.inference},
 }
 
 model_configs = {
@@ -47,7 +47,6 @@ model_configs = {
 
 def run_task(args ,config ):
 
-    #config['project'] = f"runs/{config['project']}"
     if args.mode == "inference":
         # inference results will be save in format - project-x/model/outputs-x
         save_dir = get_save_dir(config['project'], args.model, "outputs", sep="-")
@@ -55,6 +54,7 @@ def run_task(args ,config ):
     else:
         # training results will be save in format - project-x/model/run-expx
         save_dir = get_save_dir(config['project'], args.model, config['run_name'], sep="-exp")
+    
     print(f"Results will be saved to {save_dir}")
 
     task_config = { **config, **vars(args), 

@@ -36,9 +36,10 @@ project       : SSLAD-2D                # metrics will be log to wandb {project}
 run_name      : efficient-det-0-test    # results will be saved to runs/project/run_name in local directory
 
 # inference configuration
-inf_weight    : yolov8n.pt # your trained weight or sth
+inf_weight    : runs/SSLAD-2D/efficient-det/efficient-det-0-test-exp3/efficientdet-d0_0_176.pth              # path to your trained weight or pretrained weight
 source        : datasets/demo.jpg       # image or video to run inference
 conf_thres    : 0.5
-nms_thres     : 0.5
+iou_thres     : 0.5
 show          : False
 save          : True
+use_float16   : False

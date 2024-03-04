@@ -118,7 +118,7 @@ python main.py --model yolo --task train
 python main.py --model yolo --task val
 ```
 
-#### Step 7 : Inferece
+#### Step 7 : Inference
 
 Inference parameters can be configure in each model yaml configuration file.
 
