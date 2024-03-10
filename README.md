@@ -68,7 +68,7 @@ We've refined the training, validation, and inference procedures to adhere to a 
     <td>-</td>
     <td>-</td>
   </tr>
-    <tr>
+  <tr>
     <td>YOLOv9</td>
     <td><a href="https://github.com/WongKinYiu/yolov9">yolov9</a></td>
     <td>-</td>
