@@ -165,19 +165,7 @@ def _eval(coco_gt, image_ids, pred_json_path):
     aR_small = coco_eval.stats[9]  # Precision at IoU=0.50:0.95, area=all, maxDets=100
     aR_medium = coco_eval.stats[10]  # Precision at IoU=0.50:0.95, area=all, maxDets=100
     aR_large = coco_eval.stats[11]  # Precision at IoU=0.50:0.95, area=all, maxDets=100
-
-    print(mAP)
-    print(mAP_50)
-    print(mAP_75)
-    print(mAP_small)
-    print(mAP_medium)
-    print(mAP_large)
-    print(aR_maxdet_1)
-    print(aR_maxdet_10)
-    print(aR_maxdet_100)
-    print(aR_small)
-    print(aR_medium)
-    print(aR_large)
+    
 
 if __name__ == '__main__':
     SET_NAME = params['val_set']
