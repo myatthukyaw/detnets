@@ -11,7 +11,7 @@ sys.path.append(os.path.abspath('models/ultralytics'))
 from models.ultralytics import train as yolo_train, val as yolo_eval, inference as yolo_inference
 
 sys.path.append(os.path.abspath('models/efficientdet'))
-from models.efficientdet import train as efficientdet_train, inference as efficientdet_inference
+from models.efficientdet import train as efficientdet_train, val as efficientdet_val, inference as efficientdet_inference
 
 def get_arguments():
     parser = argparse.ArgumentParser(description='Script to run different models with specified modes.')
@@ -37,6 +37,7 @@ model_functions = {
                         'val': yolo_eval.val, 
                         'inference': yolo_inference.inference },
     'efficient-det' : {'train': efficientdet_train.train,
+                       'val' : efficientdet_val.val, 
                        'inference': efficientdet_inference.inference},
 }
 
