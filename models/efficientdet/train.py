@@ -108,10 +108,10 @@ class Train_EfficientDet:
                                           scales=eval(self.cfg['anchors_scales']))
 
     def _get_optimizer(self):
-        if self.cfg['optim'] == 'adamw':
-            return torch.optim.AdamW(self.model.parameters(), self.cfg['lr'])
+        if self.cfg['train']['lr'] == 'adamw':
+            return torch.optim.AdamW(self.model.parameters(), self.cfg['train']['lr'])
         else:
-            return torch.optim.SGD(self.model.parameters(), self.cfg['lr'], momentum=0.9, nesterov=True)
+            return torch.optim.SGD(self.model.parameters(), self.cfg['train']['lr'], momentum=0.9, nesterov=True)
 
     def _get_scheduler(self):
         return torch.optim.lr_scheduler.ReduceLROnPlateau(self.optimizer, patience=3, verbose=True)
@@ -124,7 +124,7 @@ class Train_EfficientDet:
         # apply sync_bn can solve it,
         # by packing all mini-batch across all gpus as one batch and normalize, then send it back to all gpus.
         # but it would also slow down the training by a little bit.
-        if self.cfg['num_gpus'] > 1 and self.cfg['batch_size'] // self.cfg['num_gpus'] < 4:
+        if self.cfg['num_gpus'] > 1 and self.cfg['train']['batch_size'] // self.cfg['num_gpus'] < 4:
             self.model.apply(replace_w_sync_bn)
             self.use_sync_bn = True
         else:
@@ -140,10 +140,10 @@ class Train_EfficientDet:
                     patch_replication_callback(self.model)
 
     def _finalize_model_setup(self):
-        if self.cfg.get('head_only', False):
+        if self.cfg['train'].get('head_only',  False):
             self.model.apply(self._freeze_backbone)
             print('[Info] Freezed backbone')
-        self.model = ModelWithLoss(self.model, debug=self.cfg.get('debug', False))
+        self.model = ModelWithLoss(self.model, debug=self.cfg['train'].get('debug', False))
 
     def _freeze_backbone(self, m):
         classname = m.__class__.__name__
@@ -165,11 +165,11 @@ class Train_EfficientDet:
 
     def _get_dataloader_params(self, shuffle):
         return {
-            'batch_size': self.cfg['batch_size'],
+            'batch_size': self.cfg['train']['batch_size'],
             'shuffle': shuffle,
             'drop_last': True,
             'collate_fn': collater,
-            'num_workers': self.cfg['num_workers']
+            'num_workers': self.cfg['train']['num_workers']
         }
 
     def _define_input_sizes(self):
@@ -183,18 +183,18 @@ class Train_EfficientDet:
         ])
 
         return CocoDataset(
-            root_dir=os.path.join(self.cfg['data_path'], self.cfg['project_name']), 
+            root_dir=os.path.join(self.cfg['train']['data_path'], self.cfg['project_name']), 
             set=set_name,
             transform=dataset_transforms
         )
 
     def _load_weights(self):
         # load last weights
-        if self.cfg['load_weights'] is not None:
-            if self.cfg['load_weights'].endswith('.pth'):
-                weights_path = self.cfg['load_weights']
+        if self.cfg['train']['load_weights'] is not None:
+            if self.cfg['train']['load_weights'].endswith('.pth'):
+                weights_path = self.cfg['train']['load_weights']
             else:
-                weights_path = get_last_weights(self.cfg['saved_path'])
+                weights_path = get_last_weights(self.cfg['train']['saved_path'])
             try:
                 last_step = int(os.path.basename(weights_path).split('_')[-1].split('.')[0])
             except:
@@ -231,11 +231,11 @@ class Train_EfficientDet:
             torch.save(self.model.module.model.state_dict(), os.path.join(self.cfg['save_dir'], name))
         else:
             torch.save(self.model.model.state_dict(), os.path.join(self.cfg['save_dir'], name))
-        print("checkpoint saved to ", os.path.join(self.cfg['saved_path'], name))
+        print("checkpoint saved to ", os.path.join(self.cfg['train']['saved_path'], name))
 
     def run_cocoeval(self, pred_json_path):
 
-        VAL_GT = os.path.join(self.cfg['data_path'], self.cfg['project_name'], 'annotations/instances_val.json')
+        VAL_GT = os.path.join(self.cfg['train']['data_path'], self.cfg['project_name'], 'annotations/instances_val.json')
         coco_gt = COCO(VAL_GT)
         image_ids = coco_gt.getImgIds()
         # load results in COCO evaluation tool
@@ -328,14 +328,14 @@ class Train_EfficientDet:
 
         print(
             'Val. Epoch: {}/{}. Classification loss: {:1.5f}. Regression loss: {:1.5f}. Total loss: {:1.5f}'.format(
-                epoch, self.cfg['num_epochs'], cls_loss, reg_loss, loss))
+                epoch, self.cfg['train']['num_epochs'], cls_loss, reg_loss, loss))
         writer.add_scalars('Loss', {'val': loss}, self.step)
         writer.add_scalars('Regression_loss', {'val': reg_loss}, self.step)
         writer.add_scalars('Classfication_loss', {'val': cls_loss}, self.step)
 
         # write output
         if epoch >= 50:
-            pred_json_path = os.path.join(self.cfg['saved_path'], 'val_bbox_results.json')
+            pred_json_path = os.path.join(self.cfg['train']['saved_path'], 'val_bbox_results.json')
             if os.path.exists(pred_json_path):
                 os.remove(pred_json_path)
             json.dump(self.results, open(pred_json_path, 'w'), indent=4)
@@ -380,7 +380,7 @@ class Train_EfficientDet:
 
                 progress_bar.set_description(
                     'Step: {}. Epoch: {}/{}. Iteration: {}/{}. Cls loss: {:.5f}. Reg loss: {:.5f}. Total loss: {:.5f}'.format(
-                        self.step, epoch, self.cfg['num_epochs'], iter + 1, self.num_iter_per_epoch, cls_loss.item(),
+                        self.step, epoch, self.cfg['train']['num_epochs'], iter + 1, self.num_iter_per_epoch, cls_loss.item(),
                         reg_loss.item(), loss.item()))
                 writer.add_scalars('Loss', {'train': loss}, self.step)
                 writer.add_scalars('Regression_loss', {'train': reg_loss}, self.step)
@@ -392,7 +392,7 @@ class Train_EfficientDet:
 
                 self.step += 1
 
-                if self.step % self.cfg['save_interval'] == 0 and self.step > 0:
+                if self.step % self.cfg['train']['save_interval'] == 0 and self.step > 0:
                     self.save_checkpoint( f"efficientdet-d{self.cfg['compound_coef']}_{epoch}_{self.step}.pth")
                     print('checkpoint...')
 
@@ -437,10 +437,10 @@ def train(**cfg):
         "config"           : cfg['config_file'],
         "compound_coef"    : cfg['compound_coef'], 
         "dataset"          : cfg['project_name'] ,
-        "epochs"           : cfg['num_epochs'],
-        "pretrain"         : cfg['load_weights'],
-        "num_workers"      : cfg['num_workers'],
-        "batch_size"       : cfg['batch_size'],
+        "epochs"           : cfg['train']['num_epochs'],
+        "pretrain"         : cfg['train']['load_weights'],
+        "num_workers"      : cfg['train']['num_workers'],
+        "batch_size"       : cfg['train']['batch_size'],
         "num_classes"      : len(cfg['obj_list']),
         "output_dir"       : cfg['save_dir'],
     }
@@ -471,7 +471,7 @@ def train(**cfg):
     start_training = time.time()
 
     try:
-        for epoch in range(cfg['num_epochs']):
+        for epoch in range(cfg['train']['num_epochs']):
 
             start_epoch = time.time()
             last_epoch = trainer.step // trainer.num_iter_per_epoch
@@ -483,14 +483,14 @@ def train(**cfg):
             
             trainer.scheduler.step(np.mean(epoch_loss))
 
-            if epoch % cfg['val_interval'] == 0:
+            if epoch % cfg['train']['val_interval'] == 0:
 
                 val_loss, val_cls_loss, val_reg_loss, pred_json_path = trainer.run_eval(epoch, data, writer)
                 
                 if not pred_json_path is None:
                     coco_eval = trainer.run_cocoeval(pred_json_path)
 
-                if loss + cfg['es_min_delta'] < trainer.best_loss:
+                if loss + cfg['train']['es_min_delta'] < trainer.best_loss:
                     trainer.best_loss = loss
                     trainer.best_epoch = epoch
 
@@ -499,7 +499,7 @@ def train(**cfg):
                 trainer.model.train()
 
                 # Early stopping
-                if epoch - trainer.best_epoch > cfg['es_patience'] > 0:
+                if epoch - trainer.best_epoch > cfg['train']['es_patience'] > 0:
                     print('[Info] Stop training at epoch {}. The lowest loss achieved is {}'.format(epoch, trainer.best_loss))
                     break
             
