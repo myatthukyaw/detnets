@@ -7,19 +7,108 @@ While some repositories offer comprehensive features and extensive documentation
 
 We've refined the training, validation, and inference procedures to adhere to a standardized format, making it straightforward for users to implement these powerful models in their projects. We've also integrated Weights & Biases (WandB) to enhance the visibility and comparability of model training metrics and logs. For in-depth insights and features, we encourage referencing the original repositories. DetNets is here to make your journey in object detection smoother and more efficient.
 
-Available SOTA Detection Models and modes/tasks
+<a id="models">Available SOTA Detection Models and modes/tasks</a>
 
-- [x] [YOLOv8](https://github.com/myatthukyaw/detnets/tree/main/models/ultralytics) - [Original Repository](https://github.com/ultralytics/ultralytics)
-- [x] [YOLOv5](https://github.com/myatthukyaw/detnets/tree/main/models/ultralytics) - [Original Repository](https://github.com/ultralytics/ultralytics)
-- [x] [RTDETR](https://github.com/myatthukyaw/detnets/tree/main/models/ultralytics) - [Original Repository](https://github.com/ultralytics/ultralytics)
-- [x] [EfficientDet](https://github.com/myatthukyaw/detnets/tree/main/models/efficient-det) - [Original Repository](https://github.com/zylo117/Yet-Another-EfficientDet-Pytorch)
-- [ ] [DETR](https://github.com/myatthukyaw/detnets/blob/main/models/detr) - [Original Repository](https://github.com/facebookresearch/detr)
-- [ ] [YOLOv9]()
-- [ ] [YOLOv7]()
-- [ ] [Yolox]()
-- [ ] [YOLO-World]()
-- [ ] [SSD]()
-<!-- - [ ] [Detectron2](https://github.com/myatthukyaw/detnets/tree/main/models/detectron2) - [Original Repository](https://github.com/facebookresearch/detectron2) -->
+<table>
+  <tr>
+    <th>Model</th>
+    <th>Original Repository</th>
+    <th>Config</th>
+    <th>Train</th>
+    <th>Evaluation</th>
+    <th>Inference</th>
+  </tr>
+  <tr>
+    <td>YOLOv8</td>
+    <td><a href="https://github.com/ultralytics/ultralytics">Ultralytics</a></td>
+    <td><a href="https://github.com/myatthukyaw/detnets/blob/main/configs/yolo.yml">yolo.yml</a></td>
+    <td><input type="checkbox" checked disabled></td>
+    <td><input type="checkbox" checked disabled></td>
+    <td><input type="checkbox" checked disabled></td>
+  </tr>
+  <tr>
+    <tr>
+    <td>YOLOv5</td>
+    <td><a href="https://github.com/ultralytics/ultralytics">Ultralytics</a></td>
+    <td><a href="https://github.com/myatthukyaw/detnets/blob/main/configs/yolo.yml">yolo.yml</a></td>
+    <td><input type="checkbox" checked disabled></td>
+    <td><input type="checkbox" checked disabled></td>
+    <td><input type="checkbox" checked disabled></td>
+  </tr>
+  <tr>
+    <tr>
+    <td>RTDETR</td>
+    <td><a href="https://github.com/ultralytics/ultralytics">Ultralytics</a></td>
+    <td><a href="https://github.com/myatthukyaw/detnets/blob/main/configs/rtdetr.yml">rtdetr.yml</a></td>
+    <td><input type="checkbox" checked disabled></td>
+    <td><input type="checkbox" checked disabled></td>
+    <td><input type="checkbox" checked disabled></td>
+  </tr>
+  <tr>
+    <td>Efficient-Det</td>
+    <td><a href="https://github.com/zylo117/Yet-Another-EfficientDet-Pytorch">Yet-Another-EfficientDet-Pytorch</a></td>
+    <td><a href="https://github.com/myatthukyaw/detnets/blob/main/configs/efficient-det.yml">efficient-det.yml</a></td>
+    <td><input type="checkbox" checked disabled></td>
+    <td><input type="checkbox" checked disabled></td>
+    <td><input type="checkbox" checked disabled></td>
+  </tr>
+  <tr>
+    <td>DETR</td>
+    <td><a href="https://github.com/facebookresearch/detr">DETR</a></td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>SSD</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+    <tr>
+    <td>YOLOv9</td>
+    <td><a href="https://github.com/WongKinYiu/yolov9">yolov9</a></td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+    <tr>
+    <td>YOLOv7</td>
+    <td><a href="https://github.com/WongKinYiu/yolov7">yolov7</a></td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+    <tr>
+    <td>YOLOR</td>
+    <td><a href="https://github.com/WongKinYiu/yolor">yolor</a></td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>YOLOX</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>YOLO-World</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+</table>
 
 
 
@@ -61,33 +150,7 @@ python scripts/coco2yolo.py --coco_dataset_root datasets/my_dataset_coco --outpu
 #### Step 2: Selecting a Model</br>
 Choose a model that fits your requirements and update the training configuration file under [configs](https://github.com/myatthukyaw/detnets/blob/main/configs) folder.
 
-<table>
-  <tr>
-    <th>Model</th>
-    <th>Dataset format</th>
-    <th>Configuration File</th>
-  </tr>
-  <tr>
-    <td>YOLOv8, YOLOv5</td>
-    <td>YOLO</td>
-    <td><a href="https://github.com/myatthukyaw/detnets/blob/main/configs/yolo.yml">config</a></td>
-  </tr>
-  <tr>
-    <td>RTDETR</td>
-    <td>YOLO</td>
-    <td><a href="https://github.com/myatthukyaw/detnets/blob/main/configs/rtdetr.yml">config</a></td>
-  </tr>
-  <tr>
-    <td>DETR</td>
-    <td>COCO</td>
-    <td><a href="https://github.com/myatthukyaw/detnets/blob/main/configs/detr.yml">config</a></td>
-  </tr>
-  <tr>
-    <td>Efficient-Det</td>
-    <td>COCO</td>
-    <td><a href="https://github.com/myatthukyaw/detnets/blob/main/configs/efficient-det.yml">config</a></td>
-  </tr>
-</table>
+You can check each model's config file in above [table](#models).
 
 #### Step 3: Download the pretrained weights
 
