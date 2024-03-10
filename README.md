@@ -3,17 +3,22 @@
 
 Welcome to the DetNets repository, which contains a collection of SOTA object detection models and streamlined for simplified training, evaluation, and inference processes. 
 
-While repositories like Ultralytics' YOLOv8 offer comprehensive features and extensive documentation, we understand that navigating and reproducing results from various sources can sometimes be challenging for cases where original repositories pose reproducibility issues or are complex to test, DetNets serves as an accessible alternative.
+While some repositories offer comprehensive features and extensive documentation, we understand that navigating and reproducing results from various sources can sometimes be challenging for cases where original repositories pose reproducibility issues or are complex to test, DetNets serves as an accessible alternative.
 
-We've refined the training, validation, and inference procedures to adhere to a standardized format, making it straightforward for users to implement these powerful models in their projects. We've also integrated Weights & Biases (WandB) to enhance the visibility and comparability of model training metrics. For in-depth insights and features, we encourage referencing the original repositories. DetNets is here to make your journey in object detection smoother and more efficient.
+We've refined the training, validation, and inference procedures to adhere to a standardized format, making it straightforward for users to implement these powerful models in their projects. We've also integrated Weights & Biases (WandB) to enhance the visibility and comparability of model training metrics and logs. For in-depth insights and features, we encourage referencing the original repositories. DetNets is here to make your journey in object detection smoother and more efficient.
 
-Available SOTA Detection Models
+Available SOTA Detection Models and modes/tasks
 
-- [x] [Yolov8](https://github.com/myatthukyaw/detnets/tree/main/models/ultralytics) - [Original Repository](https://github.com/ultralytics/ultralytics)
-- [x] [Yolov5](https://github.com/myatthukyaw/detnets/tree/main/models/ultralytics) - [Original Repository](https://github.com/ultralytics/ultralytics)
+- [x] [YOLOv8](https://github.com/myatthukyaw/detnets/tree/main/models/ultralytics) - [Original Repository](https://github.com/ultralytics/ultralytics)
+- [x] [YOLOv5](https://github.com/myatthukyaw/detnets/tree/main/models/ultralytics) - [Original Repository](https://github.com/ultralytics/ultralytics)
 - [x] [RTDETR](https://github.com/myatthukyaw/detnets/tree/main/models/ultralytics) - [Original Repository](https://github.com/ultralytics/ultralytics)
 - [x] [EfficientDet](https://github.com/myatthukyaw/detnets/tree/main/models/efficient-det) - [Original Repository](https://github.com/zylo117/Yet-Another-EfficientDet-Pytorch)
 - [ ] [DETR](https://github.com/myatthukyaw/detnets/blob/main/models/detr) - [Original Repository](https://github.com/facebookresearch/detr)
+- [ ] [YOLOv9]()
+- [ ] [YOLOv7]()
+- [ ] [Yolox]()
+- [ ] [YOLO-World]()
+- [ ] [SSD]()
 <!-- - [ ] [Detectron2](https://github.com/myatthukyaw/detnets/tree/main/models/detectron2) - [Original Repository](https://github.com/facebookresearch/detectron2) -->
 
 
@@ -38,7 +43,7 @@ git clone https://github.com/myatthukyaw/detnets.git
 cd detnets
 
 # Install dependencies (ensure you meet the prerequisites)
-pip install -r requirements.txt
+pip install -r requirements.txt --no-cache-dir 
 ```
 
 ## How to Use

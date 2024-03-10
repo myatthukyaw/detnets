@@ -1,8 +1,8 @@
-# training configuration
 project_name  : SSLAD-2D
 train_set     : train
 val_set       : val
-num_gpus      : 0
+num_gpus      : 1
+compound_coef : 0                               # coefficients of efficientdet or model size
 mean          : [ 0.485, 0.456, 0.406 ]         # mean and std in RGB order, actually this part should remain unchanged as long as your dataset is similar to coco.
 std           : [ 0.229, 0.224, 0.225 ]
 anchors_scales: '[2 ** 0, 2 ** (1.0 / 3.0), 2 ** (2.0 / 3.0)]'  # this anchor is adapted to the dataset
@@ -13,33 +13,46 @@ obj_list      : [ 'Pedestrian',                 # classes
                   'Truck', 
                   'Tram', 
                   'Tricycle' ]
-compound_coef : 0                           # coefficients of efficientdet or model size
-num_workers   : 2                           # num_workers of dataloader
-batch_size    : 10                          # number of images per batch among all devices
-head_only     : False                       # whether finetunes only the regressor and the classifier,useful in early stage convergence or small/easy dataset
-lr            : 0.0001                      # leaning rate
-optim         : adamw                       # select optimizer for training, suggest using admaw until the very final stage then switch to sgd
-num_epochs    : 5
-val_interval  : 1                           # Number of epoches between validation phases
-save_interval : 500                         # Number of steps between saving
-es_min_delta  : 0.0                         # Early stoppins parameter: minimum change loss to qualify as an improvement
-es_patience   : 0                           # Early stopping parameter: number of epochs with no improvement after which training will be stopped. Set to 0 to disable this technique.
-data_path     : ./datasets/ # the root folder of dataset
-#log_path      : logs
-load_weights  : weights/efficientdet-d0.pth      # whether to load weights from a checkpoint, set None to initialize, set \'last\' to load last checkpoint')
-saved_path    : runs                        # root path to save the training results
-debug         : False                       # whether visualize the predicted boxes of training,'the output images will be in test/')
-
 # saving results to wandb and local dir
 wandb         : False                   # save results to wandb, set False if you don't want to log to wandb  
 project       : SSLAD-2D                # metrics will be log to wandb {project} and run {run_name}
 run_name      : efficient-det-0-test    # results will be saved to runs/project/run_name in local directory
 
+# training configuration
+train :
+  num_workers   : 2                           # num_workers of dataloader
+  batch_size    : 5                          # number of images per batch among all devices
+  head_only     : False                       # whether finetunes only the regressor and the classifier,useful in early stage convergence or small/easy dataset
+  lr            : 0.0001                      # leaning rate
+  optim         : adamw                       # select optimizer for training, suggest using admaw until the very final stage then switch to sgd
+  num_epochs    : 10
+  val_interval  : 1                           # Number of epoches between validation phases
+  save_interval : 500                         # Number of steps between saving
+  es_min_delta  : 0.0                         # Early stoppins parameter: minimum change loss to qualify as an improvement
+  es_patience   : 0                           # Early stopping parameter: number of epochs with no improvement after which training will be stopped. Set to 0 to disable this technique.
+  data_path     : ./datasets/ # the root folder of dataset
+  #log_path      : logs
+  load_weights  : weights/efficientdet-d0.pth      # whether to load weights from a checkpoint, set None to initialize, set \'last\' to load last checkpoint')
+  saved_path    : runs                        # root path to save the training results
+  debug         : False                       # whether visualize the predicted boxes of training,'the output images will be in test/')
+
+# val configuration
+val :
+  val_weight    : runs/SSLAD-2D/efficient-det/efficient-det-0-test-exp4/efficientdet-d0_4_2500.pth
+  num_workers   : 2                           # num_workers of dataloader
+  batch_size    : 10                          # number of images per batch among all devices
+  conf_thres    : 0.5
+  nms_thres     : 0.5
+  device        : 0
+  use_float16   : False
+
+
 # inference configuration
-inf_weight    : runs/SSLAD-2D/efficient-det/efficient-det-0-test-exp3/efficientdet-d0_0_176.pth              # path to your trained weight or pretrained weight
-source        : datasets/demo.mp4       # image or video to run inference
-conf_thres    : 0.5
-iou_thres     : 0.5
-show          : False
-save          : True
-use_float16   : False
+inference :
+  inf_weight    : runs/SSLAD-2D/efficient-det/efficient-det-0-test-exp3/efficientdet-d0_0_176.pth              # path to your trained weight or pretrained weight
+  source        : datasets/demo.jpg       # image or video to run inference
+  conf_thres    : 0.5
+  nms_thres     : 0.5
+  show          : False
+  save          : True
+  use_float16   : False

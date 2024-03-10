@@ -19,13 +19,13 @@ class Inference:
     def __init__(self, **cfg):
         self.cfg = cfg
         self.compound_coef = cfg['compound_coef']
-        self.source = cfg['source']
         self.anchor_ratios = eval(self.cfg['anchors_ratios'])
         self.anchor_scales = eval(self.cfg['anchors_scales'])
-        self.threshold = self.cfg['conf_thres']
-        self.iou_threshold = self.cfg['iou_thres']
+        self.source = cfg['inference']['source']
+        self.threshold = self.cfg['inference']['conf_thres']
+        self.nms_threshold = self.cfg['inference']['nms_thres']
         self.use_cuda = True if cfg['num_gpus'] > 0 else False
-        self.use_float16 = self.cfg['use_float16']
+        self.use_float16 = self.cfg['inference']['use_float16']
         self.regressBoxes = BBoxTransform()
         self.clipBoxes = ClipBoxes()
 
@@ -50,7 +50,7 @@ class Inference:
                                            num_classes=len(self.obj_list),
                                            ratios=self.anchor_ratios, 
                                            scales=self.anchor_scales)
-        self.model.load_state_dict( torch.load(self.cfg['inf_weight'], 
+        self.model.load_state_dict( torch.load(self.cfg['inference']['inf_weight'], 
                                     map_location='cpu'))
         self.model.requires_grad_(False)
         self.model.eval()
@@ -77,7 +77,7 @@ class Inference:
         with torch.no_grad():
             features, regression, classification, anchors = self.model(x)
             out = postprocess( x, anchors, regression, classification, self.regressBoxes, 
-                               self.clipBoxes, self.threshold, self.iou_threshold)
+                               self.clipBoxes, self.threshold, self.nms_threshold)
         out = invert_affine(framed_metas, out)
         end = time.time() - start
         print(f"Inference time on frame : {end}")
@@ -90,7 +90,7 @@ class Inference:
         self.display(out, ori_imgs)
     
     def video_inference(self):
-        cap = cv2.VideoCapture(self.cfg['source'])
+        cap = cv2.VideoCapture(self.cfg['inference']['source'])
         frame_no = 0
 
         while True:
@@ -98,7 +98,6 @@ class Inference:
             if not ret:
                 break
 
-            # frame preprocessing
             ori_imgs, framed_imgs, framed_metas = preprocess_video(frame, max_size=self.input_size)
             out = self._run_inference(framed_imgs, framed_metas)
             img_show = self.display(out, ori_imgs, frame_no)
@@ -124,12 +123,12 @@ class Inference:
                 plot_one_box( imgs[i], [x1, y1, x2, y2], label=obj, score=score,
                               color=self.color_list[get_index_label(obj, self.obj_list)])
 
-            if self.cfg['show']:
+            if self.cfg['inference']['show']:
                 cv2.imshow('img', imgs[i])
                 cv2.waitKey(0)
 
-            if self.cfg['save']:
-                output_path = os.path.join(self.cfg['save_dir'], self.cfg['source'].split('/')[-1].split('.')[0]+f'-{frame_no}.jpg')
+            if self.cfg['inference']['save']:
+                output_path = os.path.join(self.cfg['save_dir'], self.cfg['inference']['source'].split('/')[-1].split('.')[0]+f'-{frame_no}.jpg')
                 cv2.imwrite(output_path, imgs[i])
 
 
@@ -137,9 +136,9 @@ class Inference:
 def inference(**cfg):
     
     infer = Inference(**cfg)
-    if cfg['source'].split(".")[-1].lower() in IMG_FORMATS:
+    if cfg['inference']['source'].split(".")[-1].lower() in IMG_FORMATS:
         infer.image_inference()
-    elif cfg['source'].split(".")[-1].lower() in VID_FORMATS:
+    elif cfg['inference']['source'].split(".")[-1].lower() in VID_FORMATS:
         infer.video_inference()
     else:
         print("Unsupported format or dictionary.")
