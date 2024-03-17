@@ -17,8 +17,13 @@ def val(**cfg):
     start_time = time.time()
     metrics = model.val(  data = cfg['config_file'], 
                           device = cfg['device'],
-                          batch = cfg['batch_size'], 
-                          project = cfg['project'],
+                          batch = cfg['val']['batch_size'], 
+                          conf = cfg['inference']['conf'],
+                          iou = cfg['inference']['iou'],
+                          max_det = cfg['inference']['max_det'], 
+                          save_json = cfg['inference']['save_json'], 
+                          imgsz = cfg['inference']['imgsz'],
+                          half = cfg['inference']['half'],
             )  
     
     total_time = time.time() - start_time
