@@ -15,15 +15,17 @@ def inference(**cfg):
         if model is None:
             print("Invalid model type")
 
-        predictions = model.predict(source=cfg['source'], 
-                                    stream=False,  
-                                    save=cfg['save'], 
-                                    conf = cfg['conf_thres'],
-                                    iou = cfg['iou_thres'],
-                                    max_det=100, 
-                                    show=cfg['show'], 
-                                    device=0,
-                                    imgsz=[640, 640],
+        predictions = model.predict(source = cfg['inference']['source'], 
+                                    stream = False, 
+                                    device = cfg['device'], 
+                                    save=cfg['inference']['save'], 
+                                    conf = cfg['inference']['conf'],
+                                    iou = cfg['inference']['iou'],
+                                    max_det = cfg['inference']['max_det'], 
+                                    show = cfg['inference']['show'], 
+                                    imgsz = cfg['inference']['imgsz'],
+                                    half = cfg['inference']['half'],
+                                    visualize = cfg['inference']['visualize'],
                                     project = cfg['project'],
                                     name = cfg['run_name'],
                                     verbose =True)
