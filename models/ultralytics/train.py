@@ -12,12 +12,12 @@ from ultralytics.utils.files import increment_path
 
 def train(**cfg):
 
-    config = {  "architecture" : f"{cfg['model']}-{cfg['weight'].split('.pt')[0]}",
+    config = {  "architecture" : f"{cfg['model']}-{cfg['train_cfg']['weight'].split('.pt')[0]}",
                 "config"       : cfg['config_file'],
                 "dataset"      : cfg['train'].split('/')[0] ,
                 "epochs"       : cfg['train_cfg']['epochs'],
                 "pretrain"     : cfg['train_cfg']['weight'],
-                "num_workers"  : cfg['train_cfg']['num_workers'],
+                "num_workers"  : cfg['train_cfg']['workers'],
                 "batch_size"   : cfg['train_cfg']['batch_size'],
                 "num_classes"  : len(cfg['names']), 
                 "output_dir"   : cfg['save_dir'], 
@@ -30,8 +30,8 @@ def train(**cfg):
                     config=config )
 
     model_selection = {
-        "yolo": YOLO(cfg['weight']),
-        "rtdetr": RTDETR(cfg['weight'])
+        "yolo": YOLO(cfg['train_cfg']['weight']),
+        "rtdetr": RTDETR(cfg['train_cfg']['weight'])
     }
 
     model = model_selection.get(cfg['model'], None)
@@ -45,22 +45,22 @@ def train(**cfg):
                  device = cfg['device'],
                  epochs = cfg['train_cfg']['epochs'], 
                  batch = cfg['train_cfg']['batch_size'], 
-                 workers = cfg['train_cfg']['num_workers'],
-                 optimizer = config['train_cfg']['optimizer'],
-                 lr0 = config['train_cfg']['lr0'],
-                 lrf = config['train_cfg']['lrf'],
-                 patience = config['train_cfg']['patience'],
-                 imgsz = config['train_cfg']['imgsz'],
-                 save = config['train_cfg']['save'],
-                 save_period = config['train_cfg']['save_period'],
-                 cache = config['train_cfg']['cache'],
-                 verbose = config['train_cfg']['verbose'],
-                 seed = config['train_cfg']['seed'],
-                 cos_lr = config['train_cfg']['cos_lr'],
-                 close_mosaic = config['train_cfg']['close_mosaic'],
-                 profile = config['train_cfg']['profile'],
-                 momentum = config['train_cfg']['momentum'],
-                 plots = config['train_cfg']['plots'],
+                 workers = cfg['train_cfg']['workers'],
+                 optimizer = cfg['train_cfg']['optimizer'],
+                 lr0 = cfg['train_cfg']['lr0'],
+                 lrf = cfg['train_cfg']['lrf'],
+                 patience = cfg['train_cfg']['patience'],
+                 imgsz = cfg['train_cfg']['imgsz'],
+                 save = cfg['train_cfg']['save'],
+                 save_period = cfg['train_cfg']['save_period'],
+                 cache = cfg['train_cfg']['cache'],
+                 verbose = cfg['train_cfg']['verbose'],
+                 seed = cfg['train_cfg']['seed'],
+                 cos_lr = cfg['train_cfg']['cos_lr'],
+                 close_mosaic = cfg['train_cfg']['close_mosaic'],
+                 profile = cfg['train_cfg']['profile'],
+                 momentum = cfg['train_cfg']['momentum'],
+                 plots = cfg['train_cfg']['plots'],
                  project = cfg['project'],
                  name = cfg['run_name'],
             )  
