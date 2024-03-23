@@ -36,6 +36,9 @@ model_functions = {
     'yolo'          : {'train': yolo_train.train,  
                         'val': yolo_eval.val, 
                         'inference': yolo_inference.inference },
+    'rt-detr'          : {'train': yolo_train.train,  
+                        'val': yolo_eval.val, 
+                        'inference': yolo_inference.inference },
     'efficient-det' : {'train': efficientdet_train.train,
                        'val' : efficientdet_val.val, 
                        'inference': efficientdet_inference.inference},
@@ -43,6 +46,7 @@ model_functions = {
 
 model_configs = {
     'yolo'          : 'configs/yolo.yml',   
+    'rt-detr'       : 'configs/rt-detr.yml',
     'efficient-det' : 'configs/efficient-det.yml',
 }
 

@@ -22,7 +22,6 @@ def train(**cfg):
                 "num_classes"  : len(cfg['names']), 
                 "output_dir"   : cfg['save_dir'], 
             }
-    shutil.copy(cfg['config_file'], cfg['save_dir'])
 
     if cfg['wandb']:
         wandb.init( project=cfg['project'],
@@ -31,7 +30,7 @@ def train(**cfg):
 
     model_selection = {
         "yolo": YOLO(cfg['train_cfg']['weight']),
-        "rtdetr": RTDETR(cfg['train_cfg']['weight'])
+        "rt-detr": RTDETR(cfg['train_cfg']['weight'])
     }
 
     model = model_selection.get(cfg['model'], None)
@@ -69,6 +68,8 @@ def train(**cfg):
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
     print('Total training time : {}'.format(total_time_str))
     config["training_time"] = total_time_str
+    
+    shutil.copy(cfg['config_file'], cfg['save_dir'])
 
     # with open(os.path.join(cfg['save_dir'],'training_config.yaml'), 'w') as file:
     #     yaml.dump(config, file)

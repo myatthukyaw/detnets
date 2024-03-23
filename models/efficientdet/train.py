@@ -405,29 +405,35 @@ class Train_EfficientDet:
     
     def collect_common_metrics(self, loss, cls_loss, reg_loss, val_loss, val_cls_loss, val_reg_loss, total_mins):
         return {
-            'train_loss': loss,
-            'train_cls_loss': cls_loss,
-            'train_reg_loss': reg_loss,
-            'val_loss': val_loss,
-            'val_cls_loss': val_cls_loss,
-            'val_reg_loss': val_reg_loss,
+            'train': {
+                'total_loss': loss,
+                'cls_loss': cls_loss,
+                'reg_loss': reg_loss,
+            },
+            'val': {
+                'total_loss': val_loss,
+                'cls_loss': val_cls_loss,
+                'reg_loss': val_reg_loss,
+            },
             'training_time': total_mins
         }
 
     def collect_extended_metrics(self, coco_eval):
         return {
-            'mAP': coco_eval.stats[0],  # mAP at IoU=0.50:0.95, area=all, maxDets=100
-            'mAP_50': coco_eval.stats[1],  # mAP at IoU=0.50, area=all, maxDets=100
-            'mAP_75': coco_eval.stats[2],  # mAP at IoU=0.75, area=all, maxDets=100
-            'mAP_small': coco_eval.stats[3],  # mAP at IoU=0.50:0.95, area=small, maxDets=100
-            'mAP_medium': coco_eval.stats[4],  # mAP at IoU=0.50:0.95, area=medium, maxDets=100
-            'mAP_large': coco_eval.stats[5],  # mAP at IoU=0.50:0.95, area=large, maxDets=100
-            'aR_maxdet_1': coco_eval.stats[6],  # Precision at IoU=0.50:0.95, area=all, maxDets=100
-            'aR_maxdet_10': coco_eval.stats[7],  # Precision at IoU=0.50:0.95, area=all, maxDets=100
-            'aR_maxdet_100': coco_eval.stats[8],  # Precision at IoU=0.50:0.95, area=all, maxDets=100
-            'aR_small': coco_eval.stats[9],  # Precision at IoU=0.50:0.95, area=small, maxDets=100
-            'aR_medium': coco_eval.stats[10],  # Precision at IoU=0.50:0.95, area=medium, maxDets=100
-            'aR_large': coco_eval.stats[11]  # Precision at IoU=0.50:0.95, area=large, maxDets=100
+            'metrics': {
+                'mAP50-95(B)': coco_eval.stats[0],  # mAP at IoU=0.50:0.95, area=all, maxDets=100
+                'mAP50(B)': coco_eval.stats[1],  # mAP at IoU=0.50, area=all, maxDets=100
+                'mAP75(B)': coco_eval.stats[2],  # mAP at IoU=0.75, area=all, maxDets=100
+                'mAP-Small(B)': coco_eval.stats[3],  # mAP at IoU=0.50:0.95, area=small, maxDets=100
+                'mAP-Medium(B)': coco_eval.stats[4],  # mAP at IoU=0.50:0.95, area=medium, maxDets=100
+                'mAP-Large(B)': coco_eval.stats[5],  # mAP at IoU=0.50:0.95, area=large, maxDets=100
+                'AR-Maxdet-1(B)': coco_eval.stats[6],  # Precision at IoU=0.50:0.95, area=all, maxDets=1
+                'AR-Maxdet-10(B)': coco_eval.stats[7],  # Precision at IoU=0.50:0.95, area=all, maxDets=10
+                'AR-Maxdet-100(B)': coco_eval.stats[8],  # Precision at IoU=0.50:0.95, area=all, maxDets=100
+                'AR-Small(B)': coco_eval.stats[9],  # Precision at IoU=0.50:0.95, area=small, maxDets=100
+                'AR-Medium(B)': coco_eval.stats[10],  # Precision at IoU=0.50:0.95, area=medium, maxDets=100
+                'AR-Large(B)': coco_eval.stats[11]  # Precision at IoU=0.50:0.95, area=large, maxDets=100
+            }
         }
 
 def train(**cfg):
