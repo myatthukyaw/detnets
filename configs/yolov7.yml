@@ -1,0 +1,90 @@
+# train and val data as 1) directory: path/images/, 2) file: path/images.txt, or 3) list: [path1/images/, path2/images/]
+train: .datasets/coco/train2017.txt  
+val: .datasets/coco/val2017.txt  
+test: .datasets/coco/test-dev2017.txt 
+
+# number of classes
+nc: 80
+# class names
+names: [ "Pedestrian", "Cyclist", "Car", "Truck", "Tram", "Tricycle" ]
+
+
+train :
+    weights       : yolo7.pt                  # initial weights path
+    cfg           : Non                       # model.yaml path
+    data          : data/coco.yaml            # data.yaml path
+    hyp           : data/hyp.scratch.p5.yaml  # hyperparameters path
+    epochs        : 100                       # num of epochs
+    batch-size    : 16                        # total batch size for all GPUs
+    img-size      : [640, 640]                # [train, test] image sizes
+    rect          : False                     # rectangular training
+    resume        : False                     # resume most recent training
+    nosave        : False                     # only save final checkpoint
+    notest        : False                     # only test final epoch
+    noautoanchor  : False                     # disable autoanchor check
+    evolve        : False                     # evolve hyperparameters
+    bucket        : None                      # gsutil bucket
+    cache-images  : False                     # cache images for faster training
+    image-weights : False                     # use weighted image selection for training
+    device        : 0                         # cuda device, i.e. 0 or 0,1,2,3 or cpu
+    multi-scale   : False                     # vary img-size +/- 50%%
+    single-cls    : False                     # train multi-class data as single-class
+    adam          : False                     # use torch.optim.Adam() optimizer
+    sync-bn       : False                     # use SyncBatchNorm, only available in DDP mode
+    local_rank    : -1                        # DDP parameter, do not modify
+    workers       : 8                         # maximum number of dataloader workers
+    project       : runs/train                # save to project/name
+    entity        : None                      # W&B entity
+    name          : exp                       # save to project/name
+    exist-ok      : False                     # existing project/name ok, do not increment
+    quad          : False                     # quad dataloader
+    linear-lr     : False                     # linear LR
+    label-smoothing : 0.0                     # Label smoothing epsilon
+    upload_dataset: False                     # Upload dataset as W&B artifact table
+    bbox_interval : -1                        # Set bounding-box image logging interval for W&B
+    save_period   : -1                        # Log model after every "save_period" epoch
+    artifact_alias: latest                    # version of dataset artifact to be used
+    freeze        : [0]                       # Freeze layers: backbone of yolov7=50, first3=0 1 2
+    v5-metric     : False                     # assume maximum recall as 1.0 in AP calculation
+
+test : 
+    weights      : yolov7.pt      # model.pt path(s)
+    data         : data/coco.yaml # *.data path
+    batch-size   : 32             # size of each image batch
+    img-size     : 640            # inference size (pixels)
+    conf-thres   : 0.001          # object confidence threshold
+    iou-thres    : 0.65           # IOU threshold for NMS
+    task         : val            # train, val, test, speed or study
+    device       : 0              # cuda device, i.e. 0 or 0,1,2,3 or cpu
+    single-cls   : False          # treat as single-class dataset
+    augment      : False          # augmented inference
+    verbose      : False          # report mAP by class
+    save-txt     : False          # save results to *.txt
+    save-hybrid  : False          # save label+prediction hybrid results to *.txt
+    save-conf    : False          # save confidences in --save-txt labels
+    save-json    : False          # save a cocoapi-compatible JSON results file
+    project      : runs/test      # save to project/name
+    name         : exp            # save to project/name
+    exist-ok     : False          # existing project/name ok, do not increment
+    no-trace     : False          # don`t trace model
+    v5-metric    : False          # assume maximum recall as 1.0 in AP calculation
+
+inference  :
+    weights     : yolov7.pt         # model.pt path
+    source      : inference/images  # source file/folder, 0 for webcam
+    img-size    : 640               # inference size (pixels)
+    conf-thres  : 0.25            # object confidence threshold
+    iou-thres : 0.45              # IOU threshold for NMS'
+    device    : 0                 # cuda device, i.e. 0 or 0,1,2,3 or cpu
+    view-img  : False             # display results
+    save-txt  : False             # save results to *.txt
+    save-conf : False             # save confidences in --save-txt labels
+    nosave    : False             # do not save images/videos
+    classes   : None              # filter by class: --class 0, or --class 0 2 3
+    agnostic-nms  : None          # class-agnostic NMS
+    augment   : False             # augmented inference
+    update    : False             # update all models
+    project   : runs/detect       # save results to project/name
+    name      : exp               # save results to project/name
+    exist-ok  : False             # existing project/name ok, do not increment
+    no-trace  : False             # don`t trace model
