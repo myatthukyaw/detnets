@@ -22,35 +22,35 @@ We've refined the training, validation, and inference procedures to adhere to a 
     <td>YOLOv8</td>
     <td><a href="https://github.com/ultralytics/ultralytics">Ultralytics</a></td>
     <td><a href="https://github.com/myatthukyaw/detnets/blob/main/configs/yolo.yml">yolo.yml</a></td>
-    <td><input type="checkbox" checked disabled></td>
-    <td><input type="checkbox" checked disabled></td>
-    <td><input type="checkbox" checked disabled></td>
+    <td>✅</td>
+    <td>✅</td>
+    <td>✅</td>
   </tr>
   <tr>
     <tr>
     <td>YOLOv5</td>
     <td><a href="https://github.com/ultralytics/ultralytics">Ultralytics</a></td>
     <td><a href="https://github.com/myatthukyaw/detnets/blob/main/configs/yolo.yml">yolo.yml</a></td>
-    <td><input type="checkbox" checked disabled></td>
-    <td><input type="checkbox" checked disabled></td>
-    <td><input type="checkbox" checked disabled></td>
+    <td>✅</td>
+    <td>✅</td>
+    <td>✅</td>
   </tr>
   <tr>
     <tr>
     <td>RTDETR</td>
     <td><a href="https://github.com/ultralytics/ultralytics">Ultralytics</a></td>
     <td><a href="https://github.com/myatthukyaw/detnets/blob/main/configs/rtdetr.yml">rtdetr.yml</a></td>
-    <td><input type="checkbox" checked disabled></td>
-    <td><input type="checkbox" checked disabled></td>
-    <td><input type="checkbox" checked disabled></td>
+    <td>✅</td>
+    <td>✅</td>
+    <td>✅</td>
   </tr>
   <tr>
     <td>Efficient-Det</td>
     <td><a href="https://github.com/zylo117/Yet-Another-EfficientDet-Pytorch">Yet-Another-EfficientDet-Pytorch</a></td>
     <td><a href="https://github.com/myatthukyaw/detnets/blob/main/configs/efficient-det.yml">efficient-det.yml</a></td>
-    <td><input type="checkbox" checked disabled></td>
-    <td><input type="checkbox" checked disabled></td>
-    <td><input type="checkbox" checked disabled></td>
+    <td>✅</td>
+    <td>✅</td>
+    <td>✅</td>
   </tr>
   <tr>
     <td>DETR</td>
@@ -94,14 +94,6 @@ We've refined the training, validation, and inference procedures to adhere to a 
   </tr>
   <tr>
     <td>YOLOX</td>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
-  </tr>
-  <tr>
-    <td>YOLO-World</td>
     <td>-</td>
     <td>-</td>
     <td>-</td>
