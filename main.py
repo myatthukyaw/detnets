@@ -18,23 +18,23 @@ def get_arguments():
 
 def import_model_functions(model_name):
     if model_name == 'yolov8':
-        sys.path.append(os.path.abspath('models/ultralytics'))
-        from models.ultralytics import train as yolov8_train, test as yolov8_test, inference as yolov8_inference
+        sys.path.append(os.path.abspath('nets/ultralytics'))
+        from nets.ultralytics import train as yolov8_train, test as yolov8_test, inference as yolov8_inference
         return { 'train': yolov8_train.train, 
                  'test': yolov8_test.test, 
                  'inference': yolov8_inference.inference
             }
     elif model_name == 'yolov7':
-        sys.path.append(os.path.abspath('models/yolov7'))
-        from models.yolov7 import train as yolov7_train, test as yolov7_test, detect as yolov7_inference
+        sys.path.append(os.path.abspath('nets/yolov7'))
+        from nets.yolov7 import train as yolov7_train, test as yolov7_test, detect as yolov7_inference
         return {'train': yolov7_train.train, 
                 'test': yolov7_test.test, 
                 'inference': yolov7_inference.detect
                 }
     elif model_name == 'efficient-det':
-        sys.path.append(os.path.abspath('models/efficientdet'))
-        from models.efficientdet import train as efficientdet_train, test as efficientdet_test, inference as efficientdet_inference
-        return {'train': efficientdet_train, 
+        sys.path.append(os.path.abspath('nets/efficientdet'))
+        from nets.efficientdet import train as efficientdet_train, test as efficientdet_test, inference as efficientdet_inference
+        return {'train': efficientdet_train.train, 
                 'test': efficientdet_test.test, 
                 'inference': efficientdet_inference.inference
                 }
