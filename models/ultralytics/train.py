@@ -29,7 +29,7 @@ def train(**cfg):
                     config=config )
 
     model_selection = {
-        "yolo": YOLO(cfg['train_cfg']['weight']),
+        "yolov8": YOLO(cfg['train_cfg']['weight']),
         "rt-detr": RTDETR(cfg['train_cfg']['weight'])
     }
 
