@@ -3,15 +3,7 @@ import random
 import torch
 import torch.nn as nn
 
-import utils
-import utils.utils
-print(utils.utils)
-print(dir(utils.utils))
-print(utils.__file__)
-
-gg
 from utils.google_utils import attempt_download
-
 from model.common import Conv, DWConv
 
 

@@ -4,10 +4,14 @@ val: .datasets/coco/val2017.txt
 test: .datasets/coco/test-dev2017.txt 
 
 # number of classes
-nc: 80
+nc: 6
 # class names
 names: [ "Pedestrian", "Cyclist", "Car", "Truck", "Tram", "Tricycle" ]
 
+# saving results to wandb and local dir
+wandb     : False            # save results to weights and bias
+project   : SSLAD-2D     # results will be saved to runs/project/run_name
+run_name  : yolov8n
 
 train :
     weights       : yolo7.pt                  # initial weights path

@@ -50,15 +50,15 @@ class Inference:
                                            num_classes=len(self.obj_list),
                                            ratios=self.anchor_ratios, 
                                            scales=self.anchor_scales)
-        self.model.load_state_dict( torch.load(self.cfg['inference']['inf_weight'], 
+        self.model.load_state_dict( torch.load(self.cfg['inference']['weight'], 
                                     map_location='cpu'))
         self.model.requires_grad_(False)
         self.model.eval()
 
         if self.use_cuda:
-            model = model.cuda()
+            self.model = self.model.cuda()
         if self.use_float16:
-            model = model.half()
+            self.model = self.model.half()
 
     def _convert_to_tensor(self, framed_imgs):
         device = torch.device('cuda' if self.use_cuda else 'cpu')

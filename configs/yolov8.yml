@@ -40,18 +40,19 @@ train_cfg :
   momentum   : 0.937       # Momentum factor for SGD or beta1 for Adam optimizers, influencing the incorporation of past gradients in the current update.
   plots      : False       # Generates and saves plots of training and validation metrics, as well as prediction examples, providing visual insights into model performance and learning progression.
 
-val_cfg :
-  weight      : yolov8n.pt  # your trained weight or sth
+test_cfg :
+  weight      : weights/yolov8n.pt  # your trained weight or sth
   conf        : 0.5
   iou         : 0.5
   imgsz       : 640
+  batch_size  : 64
   half        : False
   max_det     : 300
   save_json   : False     # If True, saves the results to a JSON file for further analysis or integration with other tools.
 
 # inference configuration
 inference : 
-  weight      : yolov8n.pt # your trained weight or sth
+  weight      : weights/yolov8n.pt # your trained weight or sth
   source      : datasets/demo.jpg       # image or video to run inference
   conf        : 0.5
   iou         : 0.5

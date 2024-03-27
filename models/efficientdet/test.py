@@ -22,9 +22,9 @@ class Eval:
         self.compound_coef = cfg['compound_coef']
         self.anchor_ratios = eval(self.cfg['anchors_ratios'])
         self.anchor_scales = eval(self.cfg['anchors_scales'])
-        self.threshold = self.cfg['val']['conf_thres']
-        self.nms_threshold = self.cfg['val']['nms_thres']
-        self.use_float16 = self.cfg['val']['use_float16']
+        self.threshold = self.cfg['test']['conf_thres']
+        self.nms_threshold = self.cfg['test']['nms_thres']
+        self.use_float16 = self.cfg['test']['use_float16']
         
         self.regressBoxes = BBoxTransform()
         self.clipBoxes = ClipBoxes()
@@ -38,13 +38,13 @@ class Eval:
                                           compound_coef=self.cfg['compound_coef'],
                                           ratios=eval(self.cfg['anchors_ratios']), 
                                           scales=eval(self.cfg['anchors_scales']))
-        self.model.load_state_dict(torch.load(self.cfg['val']['val_weight'], map_location=torch.device('cpu')))
+        self.model.load_state_dict(torch.load(self.cfg['test']['weight'], map_location=torch.device('cpu')))
         self.model.requires_grad_(False)
         self.model.eval()
 
     def _move_to_device(self):
         # moving model to device
-        self.model = self.model.to(self.cfg['val']['device'])
+        self.model = self.model.to(self.cfg['test']['device'])
         if self.use_float16:
             self.model.half()
 
@@ -67,11 +67,11 @@ class Eval:
 
     def _get_dataloader_params(self, shuffle):
         return {
-            'batch_size': self.cfg['val']['batch_size'],
+            'batch_size': self.cfg['test']['batch_size'],
             'shuffle': shuffle,
             'drop_last': True,
             'collate_fn': collater,
-            'num_workers': self.cfg['val']['num_workers']
+            'num_workers': self.cfg['test']['num_workers']
         }
         
     def _get_val_set_generator(self):
@@ -123,7 +123,6 @@ class Eval:
 
         for img, reg, cls, img_meta, img_id in zip(imgs, regressions, classifications, imgs_meta, imgs_ids):
             preds = self._postprocess_predictions(img, reg, cls, anchors, img_meta)[0]
-            print(preds)
             scores = preds['scores']
             class_ids = preds['class_ids']
             rois = preds['rois']
@@ -147,7 +146,6 @@ class Eval:
                     }
 
                     self.results.append(image_result)
-            print(len(self.results))
 
     def _postprocess_predictions(self, img, reg, cls, anchors, img_meta):
         preds = postprocess(img.unsqueeze(0), anchors, reg.unsqueeze(0), cls.unsqueeze(0),
@@ -175,8 +173,8 @@ class Eval:
         annot = data['annot']
         imgs_ids = data['img_id']
 
-        imgs = imgs.to(self.cfg['val']['device'])
-        annot = annot.to(self.cfg['val']['device'])
+        imgs = imgs.to(self.cfg['test']['device'])
+        annot = annot.to(self.cfg['test']['device'])
 
         max_size = self.input_sizes[self.cfg['compound_coef']]
         imgs_meta = [self._aspectaware_resize_padding(img_shape, max_size, max_size) for img_shape in data['orig_shape']]
@@ -196,7 +194,7 @@ class Eval:
         return pred_json_path
 
 
-def val(**cfg):
+def test(**cfg):
 
     evaluation = Eval(**cfg)
     evaluation.run_val()

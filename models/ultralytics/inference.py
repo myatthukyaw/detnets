@@ -4,17 +4,16 @@ from ultralytics import YOLO, RTDETR
 
 def inference(**cfg):
 
-    if os.path.exists(cfg['weight']):
+    if os.path.exists(cfg['inference']['weight']):
 
-        model_selection = {
-                            "yolo": YOLO(cfg['inf_weight']),
-                            "rtdetr": RTDETR(cfg['inf_weight'])
-                        }
+        model_selection = { "yolov8": YOLO(cfg['inference']['weight']),
+                            "rtdetr": RTDETR(cfg['inference']['weight'])
+                          }
 
         model = model_selection.get(cfg['model'], None)
         if model is None:
             print("Invalid model type")
-
+        print(cfg['project'], cfg['run_name'])
         predictions = model.predict(source = cfg['inference']['source'], 
                                     stream = False, 
                                     device = cfg['device'], 
@@ -29,9 +28,5 @@ def inference(**cfg):
                                     project = cfg['project'],
                                     name = cfg['run_name'],
                                     verbose =True)
-        # for result in predictions:
-        #     if args.save_txt:
-        #         txt_path = os.path.join(save_dir, 'txts', result.path.split('/')[-1].replace('.jpg', '.txt'))
-        #         result.save_txt(txt_path)
     else:
         print("Model weights file not found. Please refer to the README for downloading the weight file.")
