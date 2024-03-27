@@ -79,10 +79,10 @@ We've refined the training, validation, and inference procedures to adhere to a 
     <tr>
     <td>YOLOv7</td>
     <td><a href="https://github.com/WongKinYiu/yolov7">yolov7</a></td>
+    <td><a href="https://github.com/myatthukyaw/detnets/blob/main/configs/yolov7.yml">yolov7.yml</a></td>
     <td>-</td>
     <td>-</td>
-    <td>-</td>
-    <td>-</td>
+    <td>✅</td>
   </tr>
     <tr>
     <td>YOLOR</td>
