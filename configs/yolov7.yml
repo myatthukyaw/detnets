@@ -1,21 +1,22 @@
 # train and val data as 1) directory: path/images/, 2) file: path/images.txt, or 3) list: [path1/images/, path2/images/]
-train: .datasets/coco/train2017.txt  
-val: .datasets/coco/val2017.txt  
-test: .datasets/coco/test-dev2017.txt 
+train     : .datasets/coco/train2017.txt  
+val       : .datasets/coco/val2017.txt  
+test      : .datasets/coco/test-dev2017.txt 
+device    : 0                         # cuda device, i.e. 0 or 0,1,2,3 or cpu
 
 # number of classes
-nc: 6
+nc        : 6
 # class names
-names: [ "Pedestrian", "Cyclist", "Car", "Truck", "Tram", "Tricycle" ]
+names     : [ "Pedestrian", "Cyclist", "Car", "Truck", "Tram", "Tricycle" ]
 
 # saving results to wandb and local dir
 wandb     : False            # save results to weights and bias
 project   : SSLAD-2D     # results will be saved to runs/project/run_name
-run_name  : yolov8n
+run_name  : yolov7
 
 train :
-    weights       : yolo7.pt                  # initial weights path
-    cfg           : Non                       # model.yaml path
+    weights       : weights/yolov7/yolov7.pt  # initial weights path
+    cfg           : None                      # model.yaml path
     data          : data/coco.yaml            # data.yaml path
     hyp           : data/hyp.scratch.p5.yaml  # hyperparameters path
     epochs        : 100                       # num of epochs
@@ -30,7 +31,6 @@ train :
     bucket        : None                      # gsutil bucket
     cache-images  : False                     # cache images for faster training
     image-weights : False                     # use weighted image selection for training
-    device        : 0                         # cuda device, i.e. 0 or 0,1,2,3 or cpu
     multi-scale   : False                     # vary img-size +/- 50%%
     single-cls    : False                     # train multi-class data as single-class
     adam          : False                     # use torch.optim.Adam() optimizer
@@ -52,14 +52,13 @@ train :
     v5-metric     : False                     # assume maximum recall as 1.0 in AP calculation
 
 test : 
-    weights      : yolov7.pt      # model.pt path(s)
+    weights      : weights/yolov7/yolov7.pt      # model.pt path(s)
     data         : data/coco.yaml # *.data path
     batch-size   : 32             # size of each image batch
     img-size     : 640            # inference size (pixels)
     conf-thres   : 0.001          # object confidence threshold
     iou-thres    : 0.65           # IOU threshold for NMS
     task         : val            # train, val, test, speed or study
-    device       : 0              # cuda device, i.e. 0 or 0,1,2,3 or cpu
     single-cls   : False          # treat as single-class dataset
     augment      : False          # augmented inference
     verbose      : False          # report mAP by class
@@ -67,28 +66,21 @@ test :
     save-hybrid  : False          # save label+prediction hybrid results to *.txt
     save-conf    : False          # save confidences in --save-txt labels
     save-json    : False          # save a cocoapi-compatible JSON results file
-    project      : runs/test      # save to project/name
-    name         : exp            # save to project/name
-    exist-ok     : False          # existing project/name ok, do not increment
-    no-trace     : False          # don`t trace model
+    no-trace     : True           # don`t trace model
     v5-metric    : False          # assume maximum recall as 1.0 in AP calculation
 
 inference  :
-    weights     : yolov7.pt         # model.pt path
-    source      : inference/images  # source file/folder, 0 for webcam
-    img-size    : 640               # inference size (pixels)
-    conf-thres  : 0.25            # object confidence threshold
-    iou-thres : 0.45              # IOU threshold for NMS'
-    device    : 0                 # cuda device, i.e. 0 or 0,1,2,3 or cpu
-    view-img  : False             # display results
-    save-txt  : False             # save results to *.txt
-    save-conf : False             # save confidences in --save-txt labels
-    nosave    : False             # do not save images/videos
-    classes   : None              # filter by class: --class 0, or --class 0 2 3
-    agnostic-nms  : None          # class-agnostic NMS
-    augment   : False             # augmented inference
-    update    : False             # update all models
-    project   : runs/detect       # save results to project/name
-    name      : exp               # save results to project/name
-    exist-ok  : False             # existing project/name ok, do not increment
-    no-trace  : False             # don`t trace model
+    weights     : weights/yolov7/yolov7.pt         # model.pt path
+    source      : datasets/demo.jpg  # source file/folder, 0 for webcam
+    img_size    : 640               # inference size (pixels)
+    conf_thres  : 0.25            # object confidence threshold
+    iou_thres   : 0.45              # IOU threshold for NMS'
+    view_img    : False             # display results
+    save_txt    : False             # save results to *.txt
+    save_conf   : False             # save confidences in --save-txt labels
+    nosave      : False             # do not save images/videos
+    classes     :                   # filter by class: --class 0, or --class 0 2 3
+    agnostic_nms  : None          # class-agnostic NMS
+    augment     : False             # augmented inference
+    update      : False             # update all models
+    no_trace    : True             # don`t trace model
