@@ -6,7 +6,7 @@ def test(**cfg):
 
     model_selection = {
         "yolov8": YOLO(cfg['test_cfg']['weight']),
-        "rtdetr": RTDETR(cfg['test_cfg']['weight'])
+        "rt-detr": RTDETR(cfg['test_cfg']['weight'])
     }
 
     model = model_selection.get(cfg['model'], None)

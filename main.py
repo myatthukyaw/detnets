@@ -8,7 +8,7 @@ from tools.files import get_save_dir
 
 def get_arguments():
     parser = argparse.ArgumentParser(description='Script to run different models with specified modes.')
-    parser.add_argument('--model', choices=['yolov8', 'yolov7','efficient-det', 'detr', 'rt-detr'], required=True,
+    parser.add_argument('--model', choices=['yolov9' ,'yolov8', 'yolov7','efficient-det', 'detr', 'rt-detr'], required=True,
                         help='Choose the model to use from the list: yolov8, efficient-det, detr, rt-detr.')
     parser.add_argument('--mode', choices=['train', 'test', 'inference'], required=True,
                         help='Specify the mode to run the model: train, val, or inference.')
@@ -17,7 +17,7 @@ def get_arguments():
     return parser.parse_args()
 
 def import_model_functions(model_name):
-    if model_name == 'yolov8':
+    if model_name == 'yolov8' or 'rt-detr':
         sys.path.append(os.path.abspath('nets/ultralytics'))
         from nets.ultralytics import train as yolov8_train, test as yolov8_test, inference as yolov8_inference
         return { 'train': yolov8_train.train, 
@@ -31,6 +31,13 @@ def import_model_functions(model_name):
                 'test': yolov7_test.test, 
                 'inference': yolov7_inference.detect
                 }
+    elif model_name == 'yolov9':
+        sys.path.append(os.path.abspath('nets/yolov9'))
+        from nets.yolov9 import train as yolov9_train, val as yolov9_test, detect as yolov9_inference
+        return {'train': yolov9_train.train, 
+                'test': yolov9_test.run, 
+                'inference': yolov9_inference.run
+                }
     elif model_name == 'efficient-det':
         sys.path.append(os.path.abspath('nets/efficientdet'))
         from nets.efficientdet import train as efficientdet_train, test as efficientdet_test, inference as efficientdet_inference
@@ -42,6 +49,7 @@ def import_model_functions(model_name):
         raise ValueError(f"Unsupported model: {model_name}")\
 
 model_configs = {
+    'yolov9'          : 'configs/yolov9.yml',  
     'yolov8'          : 'configs/yolov8.yml',   
     'yolov7'          : 'configs/yolov7.yml',   
     'rt-detr'       : 'configs/rt-detr.yml',
