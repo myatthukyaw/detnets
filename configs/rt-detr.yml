@@ -19,7 +19,7 @@ project   : SSLAD-2D     # results will be saved to runs/project/run_name
 run_name  : rtdetr-l
 
 train_cfg :
-  weight     : rtdetr-l.pt     # pretrained model choices - yolov8n.pt yolov8s.pt yolov8m.pt yolov8l.pt yolov8x.pt
+  weight     : weights/rt-detr/rtdetr-l.pt     # pretrained model choices - rtdetr-l.pt , rtdetr-x.pt
   workers    : 1
   epochs     : 10
   batch_size : 8
@@ -40,7 +40,7 @@ train_cfg :
   plots      : False       # Generates and saves plots of training and validation metrics, as well as prediction examples, providing visual insights into model performance and learning progression.
 
 val_cfg :
-  weight      : yolov8n.pt  # your trained weight or sth
+  weight      : weights/rt-detr/rtdetr-l.pt   # your trained weight or sth
   conf        : 0.5
   iou         : 0.5
   imgsz       : 640
@@ -50,7 +50,7 @@ val_cfg :
 
 # inference configuration
 inference : 
-  weight      : yolov8n.pt # your trained weight or sth
+  weight      : weights/rt-detr/rtdetr-l.pt  # your trained weight or sth
   source      : datasets/demo.jpg       # image or video to run inference
   conf        : 0.5
   iou         : 0.5

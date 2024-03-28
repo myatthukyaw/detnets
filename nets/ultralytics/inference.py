@@ -7,7 +7,7 @@ def inference(**cfg):
     if os.path.exists(cfg['inference']['weight']):
 
         model_selection = { "yolov8": YOLO(cfg['inference']['weight']),
-                            "rtdetr": RTDETR(cfg['inference']['weight'])
+                            "rt-detr": RTDETR(cfg['inference']['weight'])
                           }
 
         model = model_selection.get(cfg['model'], None)

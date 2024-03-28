@@ -25,7 +25,7 @@ project   : SSLAD-2D     # results will be saved to runs/project/run_name
 run_name  : yolov7
 
 train :
-    weights       : weights/yolov7/yolov7.pt  # model.pt path(s) - choices [yolov7.pt, yolov7x.pt, yolov7-w6.pt, yolov7-e6.pt, yolov7-d6.pt, yolov7-e6e.pt]
+    weights       : weights/yolov9/yolov9-c-converted.pt # model.pt path [yolov9-c-converted.pt , yolov9-e-converted.pt ]
     cfg           : None                      # model.yaml path
     data          : data/coco.yaml            # data.yaml path
     hyp           : data/hyp.scratch.p5.yaml  # hyperparameters path
@@ -62,7 +62,7 @@ train :
     v5-metric     : False                     # assume maximum recall as 1.0 in AP calculation
 
 test : 
-    weights      : weights/yolov7/yolov7.pt    # model.pt path(s) - choices [yolov7.pt, yolov7x.pt, yolov7-w6.pt, yolov7-e6.pt, yolov7-d6.pt, yolov7-e6e.pt]
+    weights      : weights/yolov9/yolov9-c-converted.pt     # model.pt path [yolov9-c-converted.pt , yolov9-e-converted.pt ]
     data         : data/coco.yaml # *.data path
     batch-size   : 32             # size of each image batch
     img-size     : 640            # inference size (pixels)
@@ -80,17 +80,28 @@ test :
     v5-metric    : False          # assume maximum recall as 1.0 in AP calculation
 
 inference  :
-    weights     : weights/yolov7/yolov7.pt    # model.pt path(s) - choices [yolov7.pt, yolov7x.pt, yolov7-w6.pt, yolov7-e6.pt, yolov7-d6.pt, yolov7-e6e.pt]
+    weights     : weights/yolov9/yolov9-c-converted.pt    # model.pt path [yolov9-c-converted.pt , yolov9-e-converted.pt ]
     source      : datasets/demo.jpg  # source file/folder, 0 for webcam
-    img_size    : 640               # inference size (pixels)
-    conf_thres  : 0.25            # object confidence threshold
+    data        : data/coco128.yaml # (optional) dataset.yaml path
+    device      : 0                 # cuda device, i.e. 0 or 0,1,2,3 or cpu
+    imgsz       : [640]             # inference size (pixels)
+    conf_thres  : 0.25              # object confidence threshold
     iou_thres   : 0.45              # IOU threshold for NMS'
-    view_img    : False             # display results
+    max_det     : 1000              # maximum detections per image
+    view_img    : True              # display results
     save_txt    : False             # save results to *.txt
     save_conf   : False             # save confidences in --save-txt labels
+    save_crop   : False             # save cropped prediction boxes
     nosave      : False             # do not save images/videos
     classes     :                   # filter by class: --class 0, or --class 0 2 3
-    agnostic_nms  : None          # class-agnostic NMS
+    agnostic_nms  : None            # class-agnostic NMS
     augment     : False             # augmented inference
+    visualize   :                   # visualize features
     update      : False             # update all models
-    no_trace    : True             # don`t trace model
+    no_trace    : True              # don`t trace model
+    line_thickness : 1               # bounding box thickness (pixels)
+    hide_labels : False             # hide labels
+    hide_conf   : False             # hide confidences
+    half        : False             # use FP16 half-precision inference
+    dnn         : False             # use OpenCV DNN for ONNX inference
+    vid_stride  : 1                 # video frame-rate stride
