@@ -71,10 +71,10 @@ We've refined the training, validation, and inference procedures to adhere to a 
   <tr>
     <td>YOLOv9</td>
     <td><a href="https://github.com/WongKinYiu/yolov9">yolov9</a></td>
+    <td><a href="https://github.com/myatthukyaw/detnets/blob/main/configs/yolov9.yml">yolov9.yml</a></td>
     <td>-</td>
     <td>-</td>
-    <td>-</td>
-    <td>-</td>
+    <td>✅</td>
   </tr>
     <tr>
     <td>YOLOv7</td>
@@ -140,9 +140,11 @@ python scripts/coco2yolo.py --coco_dataset_root datasets/my_dataset_coco --outpu
 ```
 
 #### Step 2: Selecting a Model</br>
-Choose a model that fits your requirements and update the training configuration file under [configs](https://github.com/myatthukyaw/detnets/blob/main/configs) folder.
+Select a model that aligns with your project needs and update the corresponding training configuration file located in the [configs](https://github.com/myatthukyaw/detnets/blob/main/configs) directory.
 
-You can check each model's config file in above [table](#models).
+Refer to the [table](#models) above to review the configuration file for each model.
+
+General configurations, such as the dataset directory and Weights & Biases (W&B) logging settings, are located in the initial section of the configuration file. Specific parameters for training, testing, and inference tasks can be found in their respective sections within each YAML configuration file.
 
 #### Step 3: Download the pretrained weights
 
