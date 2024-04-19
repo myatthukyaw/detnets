@@ -5,7 +5,7 @@ Welcome to the DetNets repository, which contains a collection of SOTA object de
 
 While some repositories offer comprehensive features and extensive documentation, we understand that navigating and reproducing results from various sources can sometimes be challenging for cases where original repositories pose reproducibility issues or are complex to test, DetNets serves as an accessible alternative.
 
-We've refined the training, validation, and inference procedures to adhere to a standardized format, making it straightforward for users to implement these powerful models in their projects. We've also integrated Weights & Biases (WandB) to enhance the visibility and comparability of model training metrics and logs. For in-depth insights and features, we encourage referencing the original repositories. DetNets is here to make your journey in object detection smoother and more efficient.
+We are working on refining the training, validation, and inference procedures to adhere to a standardized format, making it straightforward for users to implement these powerful models in their projects. We've also integrated Weights & Biases (WandB) to enhance the visibility and comparability of model training metrics and logs. For in-depth insights and features, we encourage referencing the original repositories. DetNets is here to make your journey in object detection smoother and more efficient.
 
 <a id="models">Available SOTA Detection Models and modes/tasks</a>
 
