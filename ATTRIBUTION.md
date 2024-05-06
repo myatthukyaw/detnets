@@ -19,6 +19,48 @@ This repository builds upon the hard work and innovative contributions of numero
 }
 ```
 
+### YOLOv7
+
+- **Repository:** https://github.com/WongKinYiu/yolov7
+
+```
+@inproceedings{wang2023yolov7,
+  title={{YOLOv7}: Trainable bag-of-freebies sets new state-of-the-art for real-time object detectors},
+  author={Wang, Chien-Yao and Bochkovskiy, Alexey and Liao, Hong-Yuan Mark},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year={2023}
+}
+```
+```
+@article{wang2023designing,
+  title={Designing Network Design Strategies Through Gradient Path Analysis},
+  author={Wang, Chien-Yao and Liao, Hong-Yuan Mark and Yeh, I-Hau},
+  journal={Journal of Information Science and Engineering},
+  year={2023}
+}
+```
+
+### YOLOv9
+
+- **Repository:** https://github.com/WongKinYiu/yolov9
+
+```
+@article{wang2024yolov9,
+  title={{YOLOv9}: Learning What You Want to Learn Using Programmable Gradient Information},
+  author={Wang, Chien-Yao  and Liao, Hong-Yuan Mark},
+  booktitle={arXiv preprint arXiv:2402.13616},
+  year={2024}
+}
+```
+```
+@article{chang2023yolor,
+  title={{YOLOR}-Based Multi-Task Learning},
+  author={Chang, Hung-Shuo and Wang, Chien-Yao and Wang, Richard Robert and Chou, Gene and Liao, Hong-Yuan Mark},
+  journal={arXiv preprint arXiv:2309.16921},
+  year={2023}
+}
+```
+
 ### Efficient-Det
 
 - **Original Paper :** EfficientDet: Scalable and Efficient Object Detection
