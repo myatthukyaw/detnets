@@ -5,7 +5,7 @@ Welcome to the DetNets repository, which contains a collection of SOTA object de
 
 While some repositories offer comprehensive features and extensive documentation, we understand that navigating and reproducing results from various sources can sometimes be challenging for cases where original repositories pose reproducibility issues or are complex to test, DetNets serves as an accessible alternative.
 
-We've refined the training, validation, and inference procedures to adhere to a standardized format, making it straightforward for users to implement these powerful models in their projects. We've also integrated Weights & Biases (WandB) to enhance the visibility and comparability of model training metrics and logs. For in-depth insights and features, we encourage referencing the original repositories. DetNets is here to make your journey in object detection smoother and more efficient.
+We are working on refining the training, validation, and inference procedures to adhere to a standardized format, making it straightforward for users to implement these powerful models in their projects. We've also integrated Weights & Biases (WandB) to enhance the visibility and comparability of model training metrics and logs. For in-depth insights and features, we encourage referencing the original repositories. DetNets is here to make your journey in object detection smoother and more efficient.
 
 <a id="models">Available SOTA Detection Models and modes/tasks</a>
 
@@ -130,7 +130,8 @@ pip install -r requirements.txt --no-cache-dir
 ## How to Use
 
 #### Step 1: Preparing Your Data</br>
-There are two dataset formats for training the detection models : yolo and coco. Prepare your dataset in one of those format according to your model accepted format. You can convert your dataset format between yolo and coco using our provided scripts. 
+Training detection models requires datasets in one of two formats: YOLO or COCO. Ensure your dataset is prepared in the format compatible with your chosen model. We offer scripts that allow you to easily convert your dataset between the YOLO and COCO formats.
+
 
 ```python
 # convert yolo format dataset to coco
@@ -155,29 +156,29 @@ chmod +x scripts/download_weights.sh
 
 #### Step 4 : Configure WandB credentials 
 
-If you are not going to log the training metrics to wandb, set the wandb flag to False in the config file. 
+If you don't want to log the training metrics to W&B, set the W&B flag to False in the config file. 
 
-Otherwise configure wandb. 
+Otherwise, configure W&B. 
 
 ```bash
-wanb login 
+wandb login 
 # enter your API key
 ```
 
 #### Step 5: One script to run them all.</br>
 You can run all tasks for all models using our [main](https://github.com/myatthukyaw/detnets/blob/main/main.py) script.
 There are two arguments to specify. 
-- model (yolo, efficient-det, detr)
-- task (train, val, efficient)
+- model (yolov8, yolov5, rt-detr, yolov7, yolov9, efficient-det, detr)
+- mode (train, test, inference)
 Lets go to next step for more information. 
 
 #### Step 6: Training and Evaluation
 ```python
 # training
-python main.py --model yolo --task train
+python main.py --model yolo --mode train
 
 # evaluation
-python main.py --model yolo --task val
+python main.py --model yolo --mode test
 ```
 
 #### Step 7 : Inference
@@ -188,18 +189,19 @@ Here is an example:
 ```bash
 ...
 # inference configuration
-inf_weight : yolov8n.pt       # your trained weight or sth
-source : data/demo.jpg        # image or video to run inference
-conf_thres : 0.5
-nms_thres : 0.5
-show : False
-save : True
+inference
+  weight      : yolov8n.pt       # your trained weight or sth
+  source      : data/demo.jpg        # image or video to run inference
+  conf_thres  : 0.5
+  nms_thres   : 0.5
+  show        : False
+  save        : True
 ...
 ```
 
 ```python
 # inference
-python train.py --model yolo --task inference
+python train.py --model yolo --mode inference
 ```
 
 #### Step 8 : Saving the output artifacts for each task.
@@ -207,7 +209,7 @@ python train.py --model yolo --task inference
 Everytime you run the train, val and inference tasks, the results artifacts like training config, trained model, result metrics, and images, will be saved in a directory.
 The directory format is as below: 
 ```bash
-# for training and validation
+# for training and testing
 runs/{project}/{model}/{run-name}-exp{x}
 
 # for inference
@@ -234,5 +236,3 @@ This project builds upon the hard work and contributions of many researchers and
 
 ## License
 This repository is licensed under [MIT License](LICENSE). Note that individual models and their associated software may carry their own licenses.
-
-## test
