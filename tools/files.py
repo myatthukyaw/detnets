@@ -4,7 +4,15 @@ from pathlib import Path
 
 def get_save_dir( project, model, name, sep ):
     """Return save_dir"""
-    project_path = os.path.join('runs', project, model)
+    # Handle case where project already includes runs/ prefix
+    if project.startswith('runs/'):
+        project_path = os.path.join(project, model)
+    else:
+        # Create path directly using runs/project/model structure
+        project_path = os.path.join('runs', project, model)
+    
+    if not os.path.exists(project_path):
+        os.makedirs(project_path)
     # name = os.path.join(project, name)
     save_dir = increment_path(Path(project_path) / name, sep=sep)
 
