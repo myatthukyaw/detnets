@@ -67,12 +67,12 @@ def load_config(model_name):
 # function to get save directory
 def create_save_dir(args, config):
     if args.mode == "inference":
-        # inference results will be save in format - project-x/model/outputs-x
+        # inference results will be save in format - runs/project/model/outputs-x
         save_dir = get_save_dir(config['project'], args.model, "outputs", sep="-")
         config['project'] = f"{config['project']}/{args.model}"
         config['run_name'] = "outputs"
     else:
-        # training results will be save in format - project-x/model/run-expx
+        # training results will be save in format - runs/project/model/run-expx
         save_dir = get_save_dir(config['project'], args.model, config['run_name'], sep="-exp")
     return save_dir, config
 
@@ -81,6 +81,10 @@ def run_task(args ,config ):
     model_functions = import_model_functions(args.model)
     if args.mode not in model_functions:
         raise ValueError(f"Unsupported mode: {args.mode} for model: {args.model}")
+    
+    # Ensure project path starts with runs/
+    if 'project' in config and not config['project'].startswith('runs/'):
+        config['project'] = f"runs/{config['project']}"
     
     save_dir, config = create_save_dir(args, config)
 
