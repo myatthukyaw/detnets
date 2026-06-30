@@ -6,7 +6,7 @@ deliberately avoid importing torch/ultralytics so they can run in plain CI.
 """
 import ast
 import glob
-import os
+import sys
 from pathlib import Path
 
 import yaml
@@ -14,9 +14,14 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CONFIG_DIR = REPO_ROOT / "configs"
 
+# main.py imports `tools.files`, which is only importable when the repo root is
+# on sys.path. pytest does not guarantee that, so add it explicitly.
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
 
 def _load_main_module():
-    """Parse main.py as a module without executing model imports."""
+    """Load main.py as a module without executing model imports."""
     import importlib.util
 
     spec = importlib.util.spec_from_file_location("detnets_main", REPO_ROOT / "main.py")
