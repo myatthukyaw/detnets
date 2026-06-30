@@ -1,0 +1,3 @@
+[submodule "nets/ultralytics"]
+	path = nets/ultralytics
+	url = https://github.com/ultralytics/ultralytics.git
