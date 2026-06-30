@@ -1,7 +1,7 @@
 # reference https://docs.ultralytics.com/modes/train/#train-settings
 
 # training configuration
-path    : /mnt/d/Workspace/personal/detnets/datasets/ # dataset root dir
+path    : ./datasets # dataset root dir
 train   : SSLAD-2D-YOLO/images/train  # train images (relative to 'path') 118287 images
 val     : SSLAD-2D-YOLO/images/val  # val images (relative to 'path') 5000 images
 test    : test-dev2017.txt 
@@ -39,7 +39,7 @@ train_cfg :
   momentum   : 0.937       # Momentum factor for SGD or beta1 for Adam optimizers, influencing the incorporation of past gradients in the current update.
   plots      : False       # Generates and saves plots of training and validation metrics, as well as prediction examples, providing visual insights into model performance and learning progression.
 
-val_cfg :
+test_cfg :
   weight      : weights/rt-detr/rtdetr-l.pt   # your trained weight or sth
   conf        : 0.5
   iou         : 0.5

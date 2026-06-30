@@ -168,17 +168,17 @@ wandb login
 #### Step 5: One script to run them all.</br>
 You can run all tasks for all models using our [main](https://github.com/myatthukyaw/detnets/blob/main/main.py) script.
 There are two arguments to specify. 
-- model (yolov8, yolov5, rt-detr, yolov7, yolov9, efficient-det, detr)
+- model (yolov8, rt-detr, yolov7, yolov9, efficient-det)
 - mode (train, test, inference)
 Lets go to next step for more information. 
 
 #### Step 6: Training and Evaluation
 ```python
 # training
-python main.py --model yolo --mode train
+python main.py --model yolov8 --mode train
 
 # evaluation
-python main.py --model yolo --mode test
+python main.py --model yolov8 --mode test
 ```
 
 #### Step 7 : Inference
@@ -189,11 +189,11 @@ Here is an example:
 ```bash
 ...
 # inference configuration
-inference
-  weight      : yolov8n.pt       # your trained weight or sth
-  source      : data/demo.jpg        # image or video to run inference
-  conf_thres  : 0.5
-  nms_thres   : 0.5
+inference :
+  weight      : weights/yolov8n.pt   # your trained weight or sth
+  source      : datasets/demo.jpg    # image or video to run inference
+  conf        : 0.5
+  iou         : 0.5
   show        : False
   save        : True
 ...
@@ -201,7 +201,7 @@ inference
 
 ```python
 # inference
-python train.py --model yolo --mode inference
+python main.py --model yolov8 --mode inference
 ```
 
 #### Step 8 : Saving the output artifacts for each task.

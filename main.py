@@ -8,8 +8,8 @@ from tools.files import get_save_dir
 
 def get_arguments():
     parser = argparse.ArgumentParser(description='Script to run different models with specified modes.')
-    parser.add_argument('--model', choices=['yolov9' ,'yolov8', 'yolov7','efficient-det', 'detr', 'rt-detr'], required=True,
-                        help='Choose the model to use from the list: yolov8, efficient-det, detr, rt-detr.')
+    parser.add_argument('--model', choices=['yolov9', 'yolov8', 'yolov7', 'efficient-det', 'rt-detr'], required=True,
+                        help='Choose the model to use from the list: yolov9, yolov8, yolov7, efficient-det, rt-detr.')
     parser.add_argument('--mode', choices=['train', 'test', 'inference'], required=True,
                         help='Specify the mode to run the model: train, val, or inference.')
     #parser.add_argument('--source', default='data',
@@ -17,11 +17,19 @@ def get_arguments():
     return parser.parse_args()
 
 def import_model_functions(model_name):
-    if model_name == 'yolov8' or 'rt-detr':
+    if model_name in ('yolov8', 'rt-detr'):
+        # The ultralytics package is vendored under nets/ultralytics; add it to
+        # the path so the adapters can `from ultralytics import ...`.
         sys.path.append(os.path.abspath('nets/ultralytics'))
-        from nets.ultralytics import train as yolov8_train, test as yolov8_test, inference as yolov8_inference
-        return { 'train': yolov8_train.train, 
-                 'test': yolov8_test.test, 
+        # Adapters live outside the vendored tree (adapters/ultralytics) so the
+        # vendored library can be swapped for a git submodule without losing them.
+        from adapters.ultralytics import (
+            train as yolov8_train,
+            test as yolov8_test,
+            inference as yolov8_inference,
+        )
+        return { 'train': yolov8_train.train,
+                 'test': yolov8_test.test,
                  'inference': yolov8_inference.inference
             }
     elif model_name == 'yolov7':
@@ -46,23 +54,25 @@ def import_model_functions(model_name):
                 'inference': efficientdet_inference.inference
                 }
     else:
-        raise ValueError(f"Unsupported model: {model_name}")\
+        raise ValueError(f"Unsupported model: {model_name}")
 
 model_configs = {
-    'yolov9'          : 'configs/yolov9.yml',  
-    'yolov8'          : 'configs/yolov8.yml',   
-    'yolov7'          : 'configs/yolov7.yml',   
+    'yolov9'        : 'configs/yolov9.yml',
+    'yolov8'        : 'configs/yolov8.yml',
+    'yolov7'        : 'configs/yolov7.yml',
     'rt-detr'       : 'configs/rt-detr.yml',
     'efficient-det' : 'configs/efficient-det.yml',
 }
 
 # Function to load configuration from a YAML file
 def load_config(model_name):
-    config_path = os.path.join('configs', f'{model_name}.yml')
-    if os.path.exists(config_path):
-        with open(config_path, 'r') as file:
-            return yaml.safe_load(file)
-    return {}
+    config_path = model_configs.get(model_name)
+    if config_path is None:
+        raise ValueError(f"No config registered for model: {model_name}")
+    if not os.path.exists(config_path):
+        raise FileNotFoundError(f"Config file not found: {config_path}")
+    with open(config_path, 'r') as file:
+        return yaml.safe_load(file)
 
 # function to get save directory
 def create_save_dir(args, config):

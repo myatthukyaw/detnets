@@ -52,7 +52,7 @@ inference :
   use_float16   : False
 
 # classes
- obj_list      : [ 'Pedestrian', 'Cyclist', 'Car',  'Truck', 'Tram', 'Tricycle' ]
+obj_list      : [ 'Pedestrian', 'Cyclist', 'Car',  'Truck', 'Tram', 'Tricycle' ]
 # coco
 # obj_list: ['person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat', 'traffic light',
 #            'fire hydrant', '', 'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog', 'horse', 'sheep',

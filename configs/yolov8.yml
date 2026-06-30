@@ -1,7 +1,7 @@
 # reference https://docs.ultralytics.com/modes/train/#train-settings
 
 # training configuration
-path    : /mnt/d/Workspace/personal/detnets/datasets/ # dataset root dir
+path    : ./datasets # dataset root dir
 train   : SSLAD-2D-YOLO/images/train  # train images (relative to 'path') 118287 images
 val     : SSLAD-2D-YOLO/images/val  # val images (relative to 'path') 5000 images
 test    : test-dev2017.txt 
