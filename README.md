@@ -119,9 +119,12 @@ conda install pytorch==1.10.0 torchvision==0.11.0 torchaudio==0.10.0 cudatoolkit
 
 Clone the repo and install dependencies
 ```bash
-# Clone this repository
-git clone https://github.com/myatthukyaw/detnets.git
+# Clone this repository (ultralytics is a git submodule, so recurse)
+git clone --recurse-submodules https://github.com/myatthukyaw/detnets.git
 cd detnets
+
+# If you already cloned without --recurse-submodules:
+git submodule update --init --recursive
 
 # Install dependencies (ensure you meet the prerequisites)
 pip install -r requirements.txt --no-cache-dir 
